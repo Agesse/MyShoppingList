@@ -1,9 +1,10 @@
-Ionic App Base
+MyShoppingList
 =====================
 
-This is the base template for Ionic starter apps.
+Application Android pour manager ses listes de courses par rayons.
 
-## Using this project
+Using this project
+------------------
 
 Install the latest Ionic CLI:
 
@@ -14,7 +15,7 @@ $ npm install -g ionic
 Then run:
 
 ```bash
-$ ionic start myApp
+$ npm i
+$ ionic serve
 ```
 
-More info on this can be found on the Ionic [Getting Started](http://ionicframework.com/docs/v2/getting-started/) page.

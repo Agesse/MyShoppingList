@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{listName}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <!-- Liste des elements -->
+  <ion-list no-lines>
+    <ion-item *ngFor="let item of itemList; let i = index"
+      (swipeleft)="delItem(item.id)"
+      (swiperight)="delItem(item.id)"
+      (press)="editItem(item)">
+      <ion-label>{{item.libelle}}</ion-label>
+      <ion-checkbox color="dark"
+        checked="item.checked"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+</ion-content>
