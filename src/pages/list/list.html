@@ -1,19 +1,23 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{listName}}</ion-title>
+    <ion-title>{{list.label}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+
   <!-- Liste des elements -->
   <ion-list no-lines>
-    <ion-item *ngFor="let item of itemList; let i = index"
-      (swipeleft)="delItem(item.id)"
-      (swiperight)="delItem(item.id)"
-      (press)="editItem(item)">
-      <ion-label>{{item.libelle}}</ion-label>
-      <ion-checkbox color="dark"
-        checked="item.checked"></ion-checkbox>
+    <ion-item *ngFor="let item of listItems; let i = index" (swipeleft)="delItem(item.id)" (swiperight)="delItem(item.id)" (press)="editItem(item)">
+      <ion-label>{{item.label}}</ion-label>
+      <ion-checkbox color="dark" checked="item.checked"></ion-checkbox>
+      <ion-note item-end>x{{item.qty}}</ion-note>
     </ion-item>
   </ion-list>
+
+  <!-- Bouton d'ajout d'item -->
+  <ion-fab bottom center>
+    <button ion-fab mini (click)="addItem()">+</button>
+  </ion-fab>
+
 </ion-content>

@@ -1,14 +1,14 @@
 export class Item {
   id: number;
-  libelle: string;
-  idRayon: number;
+  label: string;
   qty: number;
   checked: boolean;
+  isSubtitle: boolean;
 
-  constructor(libelle: string) {
-    this.libelle = libelle;
-    this.idRayon = 0;
+  constructor(label: string) {
+    this.label = label;
     this.qty = 1;
     this.checked = false;
+    this.isSubtitle = false;
   }
 }
