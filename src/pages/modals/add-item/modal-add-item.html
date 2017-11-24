@@ -12,14 +12,18 @@
   <form #addItemForm="ngForm" (ngSubmit)="dismiss(true)" novalidate>
     <ion-list>
       <ion-item>
-        <ion-label color="primary">Libelle</ion-label>
-        <ion-input name="libelle" placeholder="Entrer un libelle" autocomplete="true" [(ngModel)]="newItem.label" required></ion-input>
+        <ion-label color="primary">Créer un rayon ?</ion-label>
+        <ion-toggle name="isSubtitle" [(ngModel)]="newItem.isSubtitle"></ion-toggle>
       </ion-item>
       <ion-item>
+        <ion-label color="primary">Libellé</ion-label>
+        <ion-input name="libelle" placeholder="Entrer un libelle" autocomplete="true" [(ngModel)]="newItem.label" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="!newItem.isSubtitle">
         <ion-label color="primary">Quantité</ion-label>
         <ion-input name="quantité" type="number" placeholder="Entrer un nombre" min="0" step="1" [(ngModel)]="newItem.qty" required></ion-input>
       </ion-item>
-      <ion-item *ngIf="subtitles.length > 0">
+      <ion-item *ngIf="subtitles.length > 0 && !newItem.isSubtitle">
         <ion-label color="primary">Rayon</ion-label>
         <ion-select [(ngModel)]="rayonId" name="rayon" cancelText="annuler">
           <ion-option *ngFor="let subtitle of subtitles" [value]="subtitle.id">{{subtitle.label}}</ion-option>

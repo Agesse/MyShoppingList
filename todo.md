@@ -9,20 +9,23 @@ BUGS
 Liste
 -----
 
-* Affichage des items de la liste
-* Ordre des items de la liste, classes par rayon
-* Rayons pliables
-* Check d'un item le grise
-* Long press modifie un item
-* Swipe del un item
-* Bouton fab d'ajout d'item
+* Changer l'ordre des items
 
 Header
 ------
 
 * Swipe sur le header change de liste
-* Bouton pour reset la liste dans le header
 * Bouton menu pour manager les listes :
   * Creer une nouvelle liste (possibilite de copier la liste)
   * Supprimer la liste
-  * Changer la couleur / le nom de la liste
+  * Changer la couleur / le nom de la liste **VARNING** ai melange add et edit !!!
+
+Autres
+------
+
+* Couleur status bar
+* Splashscreen
+* Revue code (commentaires, imports, variables et fonctions inutiles)
+* Animations
+* Style
+* Separer chaines caracteres

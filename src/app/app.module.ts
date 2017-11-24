@@ -1,6 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicStorageModule } from '@ionic/storage';
+import { Vibration } from '@ionic-native/vibration';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyShoppingList } from './app.component';
 
@@ -9,18 +10,21 @@ import { AppService } from "./services/app.service";
 import { NotificationService } from "./services/notification.service";
 
 import { ListPage } from '../pages/list/list';
-import { TabsPage } from '../pages/tabs/tabs';
 import { AddItem } from '../pages/modals/add-item/modal-add-item';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { UpdateItem } from '../pages/modals/update-item/modal-update-item';
+import { StorageService } from './services/storage.service';
+import { AddList } from '../pages/modals/add-list/modal-add-list';
 
 @NgModule({
   declarations: [
     MyShoppingList,
     ListPage,
-    TabsPage,
-    AddItem
+    AddItem,
+    AddList,
+    UpdateItem
   ],
   imports: [
     BrowserModule,
@@ -31,14 +35,17 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   entryComponents: [
     MyShoppingList,
     ListPage,
-    TabsPage,
-    AddItem
+    AddItem,
+    AddList,
+    UpdateItem
   ],
   providers: [
     StatusBar,
     SplashScreen,
     NotificationService,
+    Vibration,
     ListService,
+    StorageService,
     AppService,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]

@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">Close</button>
+    </ion-buttons>
+    <ion-title>Modifier un item</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <form #updateItemForm="ngForm" (ngSubmit)="dismiss(true)" novalidate>
+    <ion-list>
+      <ion-item>
+        <ion-label color="primary">Libellé</ion-label>
+        <ion-input name="libelle" placeholder="Entrer un libelle" autocomplete="true" [(ngModel)]="item.label" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="!item.isSubtitle">
+        <ion-label color="primary">Quantité</ion-label>
+        <ion-input name="quantité" type="number" placeholder="Entrer un nombre" min="0" step="1" [(ngModel)]="item.qty" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="subtitles.length > 0 && !item.isSubtitle">
+        <ion-label color="primary">Rayon</ion-label>
+        <ion-select [(ngModel)]="idRayon" name="rayon" cancelText="annuler">
+          <ion-option *ngFor="let subtitle of subtitles" [value]="subtitle.id">{{subtitle.label}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <button ion-button type="submit" [disabled]="!updateItemForm.form.valid" full>Valider</button>
+  </form>
+</ion-content>
