@@ -5,7 +5,6 @@ import { Vibration } from '@ionic-native/vibration';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyShoppingList } from './app.component';
 
-import { ListService } from "./services/list.service";
 import { AppService } from "./services/app.service";
 import { NotificationService } from "./services/notification.service";
 
@@ -44,7 +43,6 @@ import { AddList } from '../pages/modals/add-list/modal-add-list';
     SplashScreen,
     NotificationService,
     Vibration,
-    ListService,
     StorageService,
     AppService,
     { provide: ErrorHandler, useClass: IonicErrorHandler }

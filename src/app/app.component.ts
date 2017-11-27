@@ -3,7 +3,6 @@ import { Platform, Events, MenuController, ModalController } from 'ionic-angular
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { ListService } from "./services/list.service";
 import { AppService } from "./services/app.service";
 import { ListPage } from '../pages/list/list';
 import { AddList } from '../pages/modals/add-list/modal-add-list';
@@ -19,8 +18,7 @@ export class MyShoppingList {
   constructor(platform: Platform,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
-    appService: AppService,
-    private listService: ListService,
+    private app: AppService,
     private event: Events,
     private menu: MenuController,
     private modalCtrl: ModalController,
@@ -31,12 +29,13 @@ export class MyShoppingList {
       splashScreen.hide();
 
       // initialisation de la 1ere liste si premier lancement de l'application
-      appService.isFirstRun()
+      app.isFirstRun()
         .then(isFirstRun => {
           if (isFirstRun) {
-            listService.setFirstList();
+            storage.setFirstList()
+              .then(() => this.event.publish("list:ready"));
           } else {
-            appService.setInit();
+            this.event.publish("list:ready");
           }
         });
     });
@@ -47,13 +46,13 @@ export class MyShoppingList {
     this.menu.close();
   }
 
-  editList() {
+  addList() {
     const modal = this.modalCtrl.create(AddList);
     modal.onDidDismiss(retour => {
       if (retour && retour.list) {
         this.storage.setList(retour.list)
           .then(list => {
-            this.listService.currentListId = list.id;
+            this.app.currentListId = list.id;
             this.event.publish("list:new", list.id);
             this.menu.close();
           });

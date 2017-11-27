@@ -7,7 +7,7 @@ import { AddItem } from "../modals/add-item/modal-add-item";
 import { Item } from '../../app/classes/item.class';
 import { List } from '../../app/classes/list.class';
 import { UpdateItem } from '../modals/update-item/modal-update-item';
-import { ListService } from '../../app/services/list.service';
+import { AppService } from "../../app/services/app.service";
 
 @Component({
   selector: 'page-list',
@@ -20,16 +20,21 @@ export class ListPage {
   subtitles: Item[];
   list: List;
 
-  constructor(private storage: StorageService, private listService: ListService,
-    private modalCtrl: ModalController, private menu: MenuController, private vibration: Vibration, private event: Events) {
+  constructor(private storage: StorageService,
+    private app: AppService,
+    private modalCtrl: ModalController,
+    private menu: MenuController,
+    private vibration: Vibration,
+    private event: Events) {
     menu.enable(true);
     this.list = new List("");
-    storage.getList(0)
-      .then(list => {
-        this.listService.currentListId = this.list.id;
-        this.list = list;
-        this.updateList();
-      });
+    event.subscribe("list:ready", () => {
+      storage.getList(0)
+        .then(list => {
+          this.list = list;
+          this.updateList();
+        });
+    });
 
     event.subscribe("list:refresh", () => {
       this.refreshList();
@@ -75,7 +80,7 @@ export class ListPage {
       if (retour && retour.item) {
         this.storage.setItem(retour.item)
           .then(item => {
-            this.storage.addItemToList(this.list, item.id, retour.idRayon);
+            this.storage.addItemToList(this.list, item.id, retour.rayonId);
             this.updateList();
           });
       }
@@ -100,11 +105,13 @@ export class ListPage {
     });
     modal.onDidDismiss(retour => {
       if (retour && retour.item) {
-        this.storage.setItem(retour.item, true);
-        if (!item.isSubtitle && retour.idRayon !== idRayon) {
-          this.storage.updateItemRayon(this.list, item.id, retour.idRayon);
-          this.updateList();
-        }
+        this.storage.setItem(retour.item, true)
+          .then(() => {
+            if (!item.isSubtitle && retour.idRayon !== idRayon) {
+              this.storage.updateItemRayon(this.list, item.id, retour.idRayon);
+              this.updateList();
+            }
+          });
       }
     });
     modal.present();

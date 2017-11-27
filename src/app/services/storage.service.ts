@@ -4,22 +4,35 @@ import { Storage } from "@ionic/storage";
 import { NotificationService } from "./notification.service";
 import { List } from "../classes/list.class";
 import { Item } from "../classes/item.class";
+import { AppService } from "./app.service";
+import { listTable, itemTable } from "../constants/tables.constants";
 
-const listPrefix = "myshoppinglist-list";
-const itemPrefix = "myshoppinglist-item";
 
 @Injectable()
 export class StorageService {
 
-  constructor(private storage: Storage, private notif: NotificationService) {
+  constructor(private storage: Storage, private notif: NotificationService, private app: AppService) {
+  }
+
+
+  setFirstList(): Promise<void> {
+    return this.storage.ready()
+      .then(() => {
+        var firstList = new List("Ma liste");
+        firstList.id = 0;
+        this.app.listsIds.push(listTable + 0);
+        return this.storage.set(listTable + firstList.id, firstList)
+          .catch(e => this.notif.notify("Erreur lors de la création de la première liste: " + e, true));
+      })
   }
 
 
   setList(list: List): Promise<List> {
-    return this.getRandomID(listPrefix)
+    return this.getRandomID(listTable)
       .then((id) => {
         list.id = id;
-        return this.storage.set(listPrefix + id, list)
+        this.app.listsIds.push(listTable + id);
+        return this.storage.set(listTable + id, list)
           .then((list) => { return list; })
           .catch((error) => this.notif.notify("Erreur lors de la creation de la liste: " + error, true));
       });
@@ -27,7 +40,7 @@ export class StorageService {
 
 
   getList(id: number): Promise<List> {
-    return this.storage.get(listPrefix + id)
+    return this.storage.get(listTable + id)
       .then(list => {
         return list;
       })
@@ -38,7 +51,7 @@ export class StorageService {
   getAllItems(idList: number[]): Promise<Item[]> {
     var promiseList = [];
     idList.forEach(id => {
-      promiseList.push(this.storage.get(itemPrefix + id));
+      promiseList.push(this.storage.get(itemTable + id));
     });
 
     return Promise.all(promiseList)
@@ -52,10 +65,10 @@ export class StorageService {
 
   setItem(item: Item, update?: boolean): Promise<Item> {
     if (!update) {
-      return this.getRandomID(itemPrefix)
+      return this.getRandomID(itemTable)
         .then(id => {
           item.id = id;
-          return this.storage.set(itemPrefix + id, item)
+          return this.storage.set(itemTable + id, item)
             .then((() => {
               this.notif.notify("Nouvel item créé");
               return item;
@@ -66,24 +79,48 @@ export class StorageService {
             }))
         });
     } else {
-      this.storage.set(itemPrefix + item.id, item)
+      return this.storage.set(itemTable + item.id, item)
         .catch((() => this.notif.notify("Erreur dans la modification de l'item", true)))
     }
   }
 
 
   delEntry(list: List, idItem: number): Promise<boolean> {
-    return this.storage.remove(itemPrefix + idItem)
+    return this.storage.remove(itemTable + idItem)
       .then((() => {
         this.notif.notify("Item supprimé");
         list.itemOrder.splice(list.itemOrder.indexOf(idItem), 1);
-        this.storage.set(listPrefix + list.id, list);
+        this.storage.set(listTable + list.id, list);
         return true;
       }))
       .catch((() => {
         this.notif.notify("Erreur lors de la suppression de l'item");
         return false;
       }));
+  }
+
+
+  delList(list: List): Promise<boolean> {
+    if (list.id) {
+      return this.storage.remove(listTable + list.id)
+        .then((() => {
+          let promises = [];
+          list.itemOrder.forEach((id) => {
+            promises.push(this.storage.remove(itemTable + id));
+          });
+          return Promise.all(promises)
+            .then(() => {
+              this.notif.notify("Liste supprimée");
+              return true;
+            })
+        }))
+        .catch((() => {
+          this.notif.notify("Erreur lors de la suppression de l'item");
+          return false;
+        }));
+    } else {
+      this.notif.notify("Impossible de supprimer la liste de base", true);
+    }
   }
 
 
@@ -94,13 +131,14 @@ export class StorageService {
    * @param {number} idRayon - id du rayon dans lequel ajouter l'item
    */
   addItemToList(list: List, idItem: number, idRayon: number) {
-    if (idRayon) {
+    // warn: 0 peut etre un id rayon valide
+    if (idRayon !== null) {
       let indexRayon = list.itemOrder.findIndex((id) => { return id === idRayon });
       list.itemOrder.splice(indexRayon + 1, 0, idItem);
     } else {
       list.itemOrder.push(idItem);
     }
-    this.storage.set(listPrefix + list.id, list);
+    this.storage.set(listTable + list.id, list);
   }
 
 
