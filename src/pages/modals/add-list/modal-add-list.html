@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">Close</button>
+    </ion-buttons>
+    <ion-title>Créer une liste</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <form #addList="ngForm" (ngSubmit)="dismiss(true)" novalidate>
+    <ion-list>
+      <ion-item>
+        <ion-label color="primary">Nom de la liste</ion-label>
+        <ion-input name="libelle" placeholder="Entrer un nom" autocomplete="true" [(ngModel)]="list.label" required></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <color-select></color-select>
+
+    <button ion-button type="submit" [disabled]="!addList.form.valid" full>Valider</button>
+  </form>
+</ion-content>
