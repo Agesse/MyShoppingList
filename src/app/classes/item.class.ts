@@ -3,14 +3,14 @@ export class Item {
   label: string;
   qty: number;
   checked: boolean;
-  isSubtitle: boolean;
+  isSection: boolean;
   hide: boolean;
 
   constructor(label: string) {
     this.label = label;
     this.qty = 1;
     this.checked = false;
-    this.isSubtitle = false;
+    this.isSection = false;
     this.hide = false;
   }
 }

@@ -5,6 +5,12 @@ import { Vibration } from '@ionic-native/vibration';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyShoppingList } from './app.component';
 
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+import { ColorSelectModule, CommonsModule } from '@ng-agesse/core';
+
 import { AppService } from "./services/app.service";
 import { NotificationService } from "./services/notification.service";
 
@@ -13,9 +19,14 @@ import { AddItem } from '../pages/modals/add-item/modal-add-item';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { UpdateItem } from '../pages/modals/update-item/modal-update-item';
+import { EditItem } from '../pages/modals/edit-item/modal-edit-item';
 import { StorageService } from './services/storage.service';
 import { AddList } from '../pages/modals/add-list/modal-add-list';
+import { EditList } from '../pages/modals/edit-list/modal-edit-list';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -23,12 +34,22 @@ import { AddList } from '../pages/modals/add-list/modal-add-list';
     ListPage,
     AddItem,
     AddList,
-    UpdateItem
+    EditList,
+    EditItem
   ],
   imports: [
     BrowserModule,
+    ColorSelectModule,
     IonicModule.forRoot(MyShoppingList),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -36,7 +57,8 @@ import { AddList } from '../pages/modals/add-list/modal-add-list';
     ListPage,
     AddItem,
     AddList,
-    UpdateItem
+    EditList,
+    EditItem
   ],
   providers: [
     StatusBar,

@@ -1,11 +1,13 @@
 page-list {
-  .subtitle {
-    background: #f1f1f1;
-    text-transform: uppercase;
-    font-size: small;
-
-    ion-icon {
-      color: #8e8e8e;
-    }
+ .subtitle {
+  background: #f1f1f1;
+  text-transform: uppercase;
+  font-size: small;
+  ion-icon {
+   color: #8e8e8e;
   }
+ }
+ .toolbar-background-md {
+  background: none;
+ }
 }

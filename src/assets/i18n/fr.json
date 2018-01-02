@@ -1,0 +1,16 @@
+{
+  "CLOSE": "Fermer",
+  "SUBMIT": "Valider",
+  "CANCEL": "Annuler",
+  "MODAL_EDIT_LIST_TITLE": "Modifier une liste",
+  "MODAL_EDIT_ITEM_TITLE": "Modifier un élément",
+  "MODAL_ADD_LIST_TITLE": "Créer une liste",
+  "MODAL_ADD_ITEM_TITLE": "Créer un élément",
+  "ADD_SECTION_LABEL": "Créer une catégorie ?",
+  "NAME_LABEL": "Nom",
+  "COLOR_CHOICE_LABEL": "Couleur",
+  "QTY_LABEL": "Quantité",
+  "SECTION_LABEL": "Catégorie",
+  "NAME_PLACEHOLDER": "Choisir un nom",
+  "QTY_PLACEHOLDER": "Choisir un nombre"
+}

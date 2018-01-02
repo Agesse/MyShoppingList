@@ -1,10 +1,15 @@
-<ion-header>
-  <ion-navbar>
+<ion-header (swipeleft)="previousList()" (swiperight)="nextList()">
+  <ion-toolbar [ngStyle]="{background: list.color.css}">
     <button ion-button menuToggle icon-only>
         <ion-icon name="menu"></ion-icon>
       </button>
     <ion-title>{{list?.label}}</ion-title>
-  </ion-navbar>
+    <ion-buttons end>
+      <button ion-button icon-only (tap)="refreshList()">
+       <ion-icon name="refresh"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
@@ -13,13 +18,13 @@
   <ion-list no-lines>
     <ng-container *ngFor="let item of listItems; let i = index">
 
-      <ion-item *ngIf="!item.hide && !item.isSubtitle" (swipeleft)="delItem(item.id)" (swiperight)="delItem(item.id)" (press)="editItem(item)">
+      <ion-item *ngIf="!item.hide && !item.isSection" (swipeleft)="delItem(item.id)" (swiperight)="delItem(item.id)" (press)="editItem(item)">
         <ion-label>{{item.label}}</ion-label>
         <ion-checkbox [(ngModel)]="item.checked" (tap)="checkItem(item)"></ion-checkbox>
         <ion-note item-end>x{{item.qty}}</ion-note>
       </ion-item>
 
-      <ion-item *ngIf="item.isSubtitle" class="subtitle" (swipeleft)="delItem(item.id)" (swiperight)="delItem(item.id)" (press)="editItem(item)"
+      <ion-item *ngIf="item.isSection" class="subtitle" (swipeleft)="delItem(item.id)" (swiperight)="delItem(item.id)" (press)="editItem(item)"
         (tap)="hideRayon(item.id)">
         <ion-label>{{item.label}}</ion-label>
       </ion-item>

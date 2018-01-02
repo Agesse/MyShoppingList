@@ -1,31 +1,29 @@
 MyShoppingList
 ==============
 
-BUGS
-----
-
-
-Liste
------
-
-* Changer l'ordre des items
-
-Header
-------
-
 **COMPOSANT COLOR SELECT**
-* Swipe sur le header change de liste
-* Bouton menu pour manager les listes :
-  * Creer une nouvelle liste (possibilite de copier la liste)
-  * Supprimer la liste
-  * Changer la couleur / le nom de la liste
+
+Revue code
+----------
+
+* Nom fichier / dossier
+* Imports inutiles
+* Noms de variables en anglais
+* Fonctions inutiles
+* Commentaires
+* Extraction chaines caractères
 
 Autres
 ------
 
-* Couleur status bar
-* Splashscreen
-* Revue code (commentaires, imports, variables et fonctions inutiles)
+* Mise en place de tests
 * Animations
 * Style
-* Separer chaines caracteres
+* Icones (manifest.jsonz index.html)
+* Splashscreen (config.xml)
+* -Choix langue-
+
+Bugs mineurs
+------------
+
+* Selection de la couleur d'origine quand édition de liste

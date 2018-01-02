@@ -20,22 +20,27 @@ export class StorageService {
       .then(() => {
         var firstList = new List("Ma liste");
         firstList.id = 0;
-        this.app.listsIds.push(listTable + 0);
+        this.app.listsIds.push(0);
         return this.storage.set(listTable + firstList.id, firstList)
           .catch(e => this.notif.notify("Erreur lors de la création de la première liste: " + e, true));
       })
   }
 
 
-  setList(list: List): Promise<List> {
-    return this.getRandomID(listTable)
-      .then((id) => {
-        list.id = id;
-        this.app.listsIds.push(listTable + id);
-        return this.storage.set(listTable + id, list)
-          .then((list) => { return list; })
-          .catch((error) => this.notif.notify("Erreur lors de la creation de la liste: " + error, true));
-      });
+  setList(list: List, update?: boolean): Promise<List> {
+    if (!update) {
+      return this.getRandomID(listTable)
+        .then((id) => {
+          list.id = id;
+          this.app.listsIds.push(id);
+          return this.storage.set(listTable + id, list)
+            .then((list) => { return list; })
+            .catch((error) => this.notif.notify("Erreur lors de la creation de la liste: " + error, true));
+        });
+    } else {
+      return this.storage.set(listTable + list.id, list)
+        .catch((() => this.notif.notify("Erreur dans la modification de la liste", true)))
+    }
   }
 
 
@@ -70,7 +75,6 @@ export class StorageService {
           item.id = id;
           return this.storage.set(itemTable + id, item)
             .then((() => {
-              this.notif.notify("Nouvel item créé");
               return item;
             }))
             .catch((() => {
@@ -88,7 +92,6 @@ export class StorageService {
   delEntry(list: List, idItem: number): Promise<boolean> {
     return this.storage.remove(itemTable + idItem)
       .then((() => {
-        this.notif.notify("Item supprimé");
         list.itemOrder.splice(list.itemOrder.indexOf(idItem), 1);
         this.storage.set(listTable + list.id, list);
         return true;
@@ -120,6 +123,8 @@ export class StorageService {
         }));
     } else {
       this.notif.notify("Impossible de supprimer la liste de base", true);
+      let p = new Promise<boolean>((resolve, reject) => resolve(false));
+      return p;
     }
   }
 

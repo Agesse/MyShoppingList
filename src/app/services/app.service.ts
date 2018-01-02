@@ -36,12 +36,12 @@ export class AppService {
     return this.storage.ready()
       .then(() => {
         return this.storage.get("firstRun")
-          .then(isFirstRun => {
-            if (isFirstRun) {
+          .then(variableInDatabase => {
+            if (!variableInDatabase) {
               this.setInit();
-              return false;
-            } else {
               return true;
+            } else {
+              return false;
             }
           })
           .catch(e => {
@@ -58,9 +58,30 @@ export class AppService {
       .then((keys) => {
         keys.forEach(key => {
           if (key.includes(listTable)) {
-            this.listsIds.push(key);
+            this.storage.get(key)
+              .then(list => this.listsIds.push(list.id))
           }
         });
       })
+  }
+
+  // Passe a la liste suivante ou boucle si derniere
+  nextList() {
+    let currentIndex = this.listsIds.findIndex(id => id === this.currentListId);
+    if (currentIndex === this.listsIds.length - 1) {
+      this.currentListId = this.listsIds[0];
+    } else {
+      this.currentListId = this.listsIds[currentIndex + 1];
+    }
+  }
+
+  // Passe a la liste precedente ou boucle si premiere
+  previousList() {
+    let currentIndex = this.listsIds.findIndex(id => id === this.currentListId);
+    if (currentIndex === 0) {
+      this.currentListId = this.listsIds[this.listsIds.length - 1];
+    } else {
+      this.currentListId = this.listsIds[currentIndex - 1];
+    }
   }
 }

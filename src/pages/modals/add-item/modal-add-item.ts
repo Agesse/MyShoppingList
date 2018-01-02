@@ -8,20 +8,25 @@ import { Item } from "../../../app/classes/item.class";
 })
 export class AddItem {
 
-  newItem: Item;
-  rayonId: number = null;
-  subtitles: Item[];
+  // VARIABLES
+  item: Item; // nouvel item
+  sectionId: number = null; // id de la categorie de l'item
+  sections: Item[]; // liste des categories
 
+
+  // CONSTRUCTEUR
   constructor(params: NavParams, public viewCtrl: ViewController) {
-    this.subtitles = params.get("subtitles");
-    this.newItem = new Item("");
+    this.sections = params.get("sections");
+    this.item = new Item("");
   }
 
+
+  // FONCTIONS
   dismiss(validateForm?: boolean) {
     if (validateForm) {
       this.viewCtrl.dismiss({
-        item: this.newItem,
-        rayonId: this.rayonId
+        item: this.item,
+        sectionId: this.sectionId
       });
     } else {
       this.viewCtrl.dismiss();

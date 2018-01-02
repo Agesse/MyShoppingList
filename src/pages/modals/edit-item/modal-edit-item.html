@@ -3,18 +3,14 @@
     <ion-buttons start>
       <button ion-button (click)="dismiss()">{{"CLOSE" | translate}}</button>
     </ion-buttons>
-    <ion-title>{{"MODAL_ADD_ITEM_TITLE" | translate}}</ion-title>
+    <ion-title>{{"MODAL_EDIT_ITEM_TITLE" | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
-  <form #addItemForm="ngForm" (ngSubmit)="dismiss(true)" novalidate>
+  <form #updateItemForm="ngForm" (ngSubmit)="dismiss(true)" novalidate>
     <ion-list>
-      <ion-item>
-        <ion-label color="primary">{{"ADD_SECTION_LABEL" | translate}}</ion-label>
-        <ion-toggle name="isSection" [(ngModel)]="item.isSection"></ion-toggle>
-      </ion-item>
       <ion-item>
         <ion-label color="primary">{{"NAME_LABEL" | translate}}</ion-label>
         <ion-input name="label" placeholder="{{'NAME_PLACEHOLDER' | translate}}" autocomplete="true" [(ngModel)]="item.label" required></ion-input>
@@ -32,6 +28,6 @@
       </ion-item>
     </ion-list>
 
-    <button ion-button type="submit" [disabled]="!addItemForm.form.valid" full>{{"SUBMIT" | translate}}</button>
+    <button ion-button type="submit" [disabled]="!updateItemForm.form.valid" full>{{"SUBMIT" | translate}}</button>
   </form>
 </ion-content>

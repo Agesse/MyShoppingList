@@ -7,23 +7,15 @@
 
   <ion-content>
     <ion-list>
-      <button ion-item icon-start (tap)="refreshList()">
-        <ion-icon name="refresh"></ion-icon>
-            Réinitialiser
-      </button>
       <button ion-item icon-start (tap)="editList()">
           <ion-icon name="color-palette"></ion-icon>
               Editer
-      </button>
-      <button ion-item icon-start>
-        <ion-icon name="copy"></ion-icon>
-            Copier
       </button>
       <button ion-item icon-start (tap)="addList()">
           <ion-icon name="add"></ion-icon>
               Nouvelle liste
       </button>
-      <button ion-item icon-start>
+      <button ion-item icon-start (tap)="delList()">
         <ion-icon name="close"></ion-icon>
             Supprimer
       </button>

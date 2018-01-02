@@ -1,18 +1,18 @@
 <ion-header>
   <ion-navbar>
     <ion-buttons start>
-      <button ion-button (click)="dismiss()">{{"CLOSE" | translate}}</button>
+      <button ion-button (click)="dismiss()">{{'CLOSE' | translate}}</button>
     </ion-buttons>
-    <ion-title>{{"MODAL_ADD_LIST_TITLE" | translate}}</ion-title>
+    <ion-title>{{'MODAL_EDIT_LIST_TITLE' | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
-  <form #addList="ngForm" (ngSubmit)="dismiss(true)" novalidate>
+  <form #editList="ngForm" (ngSubmit)="dismiss(true)" novalidate>
     <ion-list>
       <ion-item>
-        <ion-label color="primary">{{"NAME_LABEL" | translate}}</ion-label>
+        <ion-label color="primary">{{'NAME_LABEL' | translate}}</ion-label>
         <ion-input name="label" placeholder="{{'NAME_PLACEHOLDER' | translate}}" autocomplete="true" [(ngModel)]="list.label" required></ion-input>
       </ion-item>
       <ion-item>
@@ -21,6 +21,6 @@
     </ion-list>
     <agesse-color-select [colors]="colorList" #colorSelect (click)="color = colorSelect"></agesse-color-select>
 
-    <button ion-button type="submit" [disabled]="!addList.form.valid" full>{{"SUBMIT" | translate}}</button>
+    <button ion-button type="submit" [disabled]="!editList.form.valid" full>{{"SUBMIT" | translate}}</button>
   </form>
 </ion-content>
