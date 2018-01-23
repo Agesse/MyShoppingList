@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
 
-import { NotificationService } from "./notification.service";
 import { listTable } from "../constants/tables.constants";
 
 
@@ -14,7 +13,7 @@ export class AppService {
   currentListId = 0;
 
 
-  constructor(private storage: Storage, private notif: NotificationService) {
+  constructor(private storage: Storage) {
     this.storage.ready()
       .then(() => {
         this.getAllListsId();
@@ -43,16 +42,12 @@ export class AppService {
             } else {
               return false;
             }
-          })
-          .catch(e => {
-            this.notif.notify(e, true);
-            return false;
           });
-      })
+      });
   }
 
 
-  // Recupere l'ensemble des ids des listes
+  // Recupere l'ensemble des ids des listes existantes
   getAllListsId() {
     this.storage.keys()
       .then((keys) => {
@@ -64,6 +59,7 @@ export class AppService {
         });
       })
   }
+
 
   // Passe a la liste suivante ou boucle si derniere
   nextList() {

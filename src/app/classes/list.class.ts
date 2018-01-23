@@ -1,4 +1,5 @@
-import { Colors, COLOR_BASICS } from "@ng-agesse/core";
+import { Colors } from "@ng-agesse/core";
+import { COLOR_BASICS } from "../constants/color.constants";
 
 export class List {
   id: number;
@@ -9,6 +10,6 @@ export class List {
   constructor(label: string) {
     this.label = label;
     this.itemOrder = [];
-    this.color = COLOR_BASICS[0];
+    this.color = COLOR_BASICS.find(valeur => valeur.label === "light-blue");
   }
 }

@@ -1,0 +1,37 @@
+{
+  "CLOSE": "Close",
+  "SUBMIT": "Ok",
+  "CANCEL": "Cancel",
+  "MODAL_EDIT_LIST_TITLE": "Edit list",
+  "MODAL_EDIT_ITEM_TITLE": "Edit item",
+  "MODAL_ADD_LIST_TITLE": "Add list",
+  "MODAL_ADD_ITEM_TITLE": "Add item",
+  "ALERT_DEL_LIST_TITLE": "Delete list",
+  "ALERT_DEL_ITEM_TITLE": "Delete item",
+  "ALERT_DEL_ITEM_MESSAGE": "Items can't be retreived after deletion",
+  "ALERT_DEL_LIST_MESSAGE": "Lists can't be retreived after deletion",
+  "ADD_SECTION_LABEL": "Create section",
+  "NAME_LABEL": "Name",
+  "COLOR_CHOICE_LABEL": "Color",
+  "QTY_LABEL": "Quantity",
+  "SECTION_LABEL": "Section",
+  "NAME_PLACEHOLDER": "Choose a name",
+  "QTY_PLACEHOLDER": "Choose a quantity",
+  "SECTION_PLACEHOLDER": "None",
+  "FIRST_LIST_NAME": "My list",
+  "ERROR": {
+    "SET_LIST": "Error creating list",
+    "SET_ITEM": "Error creating item",
+    "UPDATE_LIST": "Error updating list",
+    "UPDATE_ITEM": "Error updating item",
+    "GET_LIST": "Error getting list",
+    "GET_ITEMS_IN_LIST": "Error getting list's items",
+    "DEL_LIST": "Error deleting list",
+    "DEL_ITEM": "Error deleting item",
+    "DEL_FIRST_LIST": "You can't delete the main list",
+    "GET_KEYS": "Error getting keys in database"
+  },
+  "SUCCESS": {
+    "DEL_LIST": "List deleted"
+  }
+}

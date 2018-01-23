@@ -6,24 +6,25 @@ MyShoppingList
 Revue code
 ----------
 
-* Nom fichier / dossier
-* Imports inutiles
-* Noms de variables en anglais
-* Fonctions inutiles
-* Commentaires
+* Verifier nom des fichiers / dossiers
+* Supprimer imports inutiles
+* Mettre les noms de variables en anglais
+* Supprimer les fonctions inutiles
+* Commenter
+* Refacto fonctions
 * Extraction chaines caractères
 
 Autres
 ------
 
-* Mise en place de tests
-* Animations
-* Style
 * Icones (manifest.jsonz index.html)
 * Splashscreen (config.xml)
-* -Choix langue-
+
+Features
+-------
+**aucunes**
+
 
 Bugs mineurs
 ------------
-
-* Selection de la couleur d'origine quand édition de liste
+**aucuns**

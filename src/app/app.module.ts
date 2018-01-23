@@ -21,7 +21,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { EditItem } from '../pages/modals/edit-item/modal-edit-item';
 import { StorageService } from './services/storage.service';
-import { AddList } from '../pages/modals/add-list/modal-add-list';
 import { EditList } from '../pages/modals/edit-list/modal-edit-list';
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -33,7 +32,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     MyShoppingList,
     ListPage,
     AddItem,
-    AddList,
     EditList,
     EditItem
   ],
@@ -56,7 +54,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     MyShoppingList,
     ListPage,
     AddItem,
-    AddList,
     EditList,
     EditItem
   ],

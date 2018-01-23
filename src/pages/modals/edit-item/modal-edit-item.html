@@ -12,16 +12,16 @@
   <form #updateItemForm="ngForm" (ngSubmit)="dismiss(true)" novalidate>
     <ion-list>
       <ion-item>
-        <ion-label color="primary">{{"NAME_LABEL" | translate}}</ion-label>
+        <ion-label color="primary" fixed>{{"NAME_LABEL" | translate}}</ion-label>
         <ion-input name="label" placeholder="{{'NAME_PLACEHOLDER' | translate}}" autocomplete="true" [(ngModel)]="item.label" required></ion-input>
       </ion-item>
       <ion-item *ngIf="!item.isSection">
-        <ion-label color="primary">{{"QTY_LABEL" | translate}}</ion-label>
+        <ion-label color="primary" fixed>{{"QTY_LABEL" | translate}}</ion-label>
         <ion-input name="qty" type="number" placeholder="{{'QTY_PLACEHOLDER' | translate}}" min="0" step="1" [(ngModel)]="item.qty"
           required></ion-input>
       </ion-item>
       <ion-item *ngIf="sections.length > 0 && !item.isSection">
-        <ion-label color="primary">{{"SECTION_LABEL" | translate}}</ion-label>
+        <ion-label color="primary" fixed>{{"SECTION_LABEL" | translate}}</ion-label>
         <ion-select [(ngModel)]="sectionId" name="section" cancelText="{{'CANCEL' | translate}}">
           <ion-option *ngFor="let section of sections" [value]="section.id">{{section.label}}</ion-option>
         </ion-select>

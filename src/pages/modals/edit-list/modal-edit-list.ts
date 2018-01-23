@@ -1,7 +1,8 @@
 import { Component, AfterViewInit, ViewChild } from "@angular/core";
 import { NavParams, ViewController } from "ionic-angular";
 import { List } from "../../../app/classes/list.class";
-import { COLOR_BASICS, Colors } from "@ng-agesse/core";
+import { Colors } from "@ng-agesse/core";
+import { COLOR_BASICS } from "../../../app/constants/color.constants";
 
 @Component({
   selector: "modal-edit-list",
@@ -15,6 +16,7 @@ export class EditList implements AfterViewInit {
 
   list: List; // liste a editer
   colorList: Colors[]; // liste des couleurs selectionnables
+  isNewList: boolean = false; // creation d'une nouvelle liste ?
 
 
   // CONSTRUCTEUR
@@ -25,16 +27,25 @@ export class EditList implements AfterViewInit {
 
 
   // FONCTIONS
-  //todo: faire fonctionner la selection
   ngAfterViewInit() {
-    this.colorSelectComponent.selectedColor = this.list.color;
+    // Permet de preselectionner la couleur de la liste
+    for (let i = 0, l = this.colorSelectComponent.colors.length; i < l; i++) {
+      if (this.colorSelectComponent.colors[i].label === this.list.color.label) {
+        this.colorSelectComponent.selectedColor = this.colorSelectComponent.colors[i];
+        break;
+      }
+    }
   }
 
   dismiss(validateForm?: boolean) {
     if (validateForm) {
       this.list.color = this.colorSelectComponent.selectedColor;
+      if (this.isNewList) {
+        this.list.itemOrder = [];
+      }
       this.viewCtrl.dismiss({
-        list: this.list
+        list: this.list,
+        new: this.isNewList
       });
     } else {
       this.viewCtrl.dismiss();

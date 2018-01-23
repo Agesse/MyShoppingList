@@ -1,12 +1,12 @@
-<ion-header (swipeleft)="previousList()" (swiperight)="nextList()">
+<ion-header (swipeleft)="previousList()" (swiperight)="nextList()" (press)="editList()">
   <ion-toolbar [ngStyle]="{background: list.color.css}">
-    <button ion-button menuToggle icon-only>
-        <ion-icon name="menu"></ion-icon>
-      </button>
     <ion-title>{{list?.label}}</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (tap)="refreshList()">
-       <ion-icon name="refresh"></ion-icon>
+      <button ion-button icon-only (tap)="resetList()">
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+      <button ion-button icon-only (tap)="delList()">
+        <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>
@@ -16,16 +16,16 @@
 
   <!-- Liste des elements -->
   <ion-list no-lines>
-    <ng-container *ngFor="let item of listItems; let i = index">
+    <ng-container *ngFor="let item of items; let i = index">
 
       <ion-item *ngIf="!item.hide && !item.isSection" (swipeleft)="delItem(item.id)" (swiperight)="delItem(item.id)" (press)="editItem(item)">
         <ion-label>{{item.label}}</ion-label>
-        <ion-checkbox [(ngModel)]="item.checked" (tap)="checkItem(item)"></ion-checkbox>
+        <ion-checkbox [(ngModel)]="item.checked" (tap)="checkItem(item)" color="dark"></ion-checkbox>
         <ion-note item-end>x{{item.qty}}</ion-note>
       </ion-item>
 
       <ion-item *ngIf="item.isSection" class="subtitle" (swipeleft)="delItem(item.id)" (swiperight)="delItem(item.id)" (press)="editItem(item)"
-        (tap)="hideRayon(item.id)">
+        (tap)="hideSection(item.id)">
         <ion-label>{{item.label}}</ion-label>
       </ion-item>
     </ng-container>
@@ -33,7 +33,7 @@
 
   <!-- Bouton d'ajout d'item -->
   <ion-fab bottom center>
-    <button ion-fab mini (tap)="addItem()">+</button>
+    <button ion-fab mini (tap)="addItem()" [ngStyle]="{background: list.color.css}">+</button>
   </ion-fab>
 
 </ion-content>
