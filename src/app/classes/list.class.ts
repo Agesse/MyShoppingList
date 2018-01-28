@@ -1,4 +1,4 @@
-import { Colors } from "@ng-agesse/core";
+import { Colors } from "@agesse/core";
 import { COLOR_BASICS } from "../constants/color.constants";
 
 export class List {

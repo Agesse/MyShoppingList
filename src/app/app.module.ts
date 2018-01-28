@@ -9,7 +9,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { ColorSelectModule, CommonsModule } from '@ng-agesse/core';
+import { ColorSelectModule } from '@agesse/core';
 
 import { AppService } from "./services/app.service";
 import { NotificationService } from "./services/notification.service";

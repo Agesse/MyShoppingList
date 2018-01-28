@@ -1,4 +1,4 @@
-import { Colors } from "@ng-agesse/core";
+import { Colors } from "@agesse/core";
 
 export const COLOR_BASICS: Colors[] = [
   {

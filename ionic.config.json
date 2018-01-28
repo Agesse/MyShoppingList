@@ -1,6 +1,8 @@
 {
-	"name": "my-shopping-list",
-	"app_id": "",
-	"type": "ionic-angular",
-	"integrations": {}
+  "name": "my-shopping-list",
+  "app_id": "",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

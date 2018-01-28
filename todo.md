@@ -17,8 +17,7 @@ Revue code
 Autres
 ------
 
-* Icones (manifest.jsonz index.html)
-* Splashscreen (config.xml)
+* Icones (resources android & app/assets/imgs/logo.png)
 
 Features
 -------

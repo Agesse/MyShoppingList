@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, ViewChild } from "@angular/core";
 import { NavParams, ViewController } from "ionic-angular";
 import { List } from "../../../app/classes/list.class";
-import { Colors } from "@ng-agesse/core";
+import { Colors } from "@agesse/core";
 import { COLOR_BASICS } from "../../../app/constants/color.constants";
 
 @Component({
