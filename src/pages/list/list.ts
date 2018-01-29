@@ -217,7 +217,7 @@ export class ListPage {
 
   // Vibration + delai animation apres check d'un item
   checkItem(item: Item) {
-    this.vibration.vibrate(500);
+    this.vibration.vibrate(1000);
     window.setTimeout((item) => {
       item.hide = true;
       this.storage.setItem(item, true);

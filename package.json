@@ -2,8 +2,13 @@
   "name": "my-shopping-list",
   "version": "1.0.0",
   "author": "Agesse",
+  "licence": "MIT",
   "homepage": "https://github.com/Agesse",
   "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Agesse/MyShoppingList"
+  },
   "scripts": {
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
@@ -12,7 +17,7 @@
     "ionic:serve": "ionic-app-scripts serve"
   },
   "dependencies": {
-    "@agesse/core": "^1.0.2",
+    "@agesse/core": "^1.0.3",
     "@angular/common": "5.1.1",
     "@angular/compiler": "5.1.1",
     "@angular/compiler-cli": "5.1.1",
@@ -24,11 +29,11 @@
     "@ionic-native/core": "4.5.2",
     "@ionic-native/splash-screen": "4.5.2",
     "@ionic-native/status-bar": "4.5.2",
-    "@ionic-native/vibration": "^4.5.2",
+    "@ionic-native/vibration": "^4.5.3",
     "@ionic/storage": "2.1.3",
-    "@ngx-translate/core": "^9.0.2",
+    "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^2.0.1",
-    "cordova-android": "^7.0.0",
+    "cordova-android": "7.0.0",
     "cordova-plugin-device": "^1.1.7",
     "cordova-plugin-ionic-webview": "^1.1.16",
     "cordova-plugin-splashscreen": "^4.1.0",

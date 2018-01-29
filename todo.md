@@ -18,6 +18,7 @@ Autres
 ------
 
 * Icones (resources android & app/assets/imgs/logo.png)
+* Faire marcher vibrations
 * Reussir build --prod --release (supprimer node_modules de @agesse si merde, essayer de tout upgrader)
 
 Features
