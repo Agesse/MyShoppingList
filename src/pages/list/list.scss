@@ -3,7 +3,13 @@ page-list {
     font-weight: bold;
     color: #515151;
   }
-  .toolbar-background-md {
+  ion-header .toolbar-background-md {
     background: none;
+  }
+  ion-footer {
+    border-top: 2px solid grey;
+    .toolbar-background-md {
+      background: white;
+    }
   }
 }

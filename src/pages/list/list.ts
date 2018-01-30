@@ -4,13 +4,12 @@ import { Vibration } from '@ionic-native/vibration';
 
 import { StorageService } from "../../app/services/storage.service";
 import { AppService } from "../../app/services/app.service";
-import { AddItem } from "../modals/add-item/modal-add-item";
-import { EditItem } from '../modals/edit-item/modal-edit-item';
+import { EditItem } from '../modals/edit-item/edit-item';
 import { Item } from '../../app/classes/item.class';
 import { List } from '../../app/classes/list.class';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
-import { EditList } from '../modals/edit-list/modal-edit-list';
+import { EditList } from '../modals/edit-list/edit-list';
 
 
 @Component({
@@ -24,6 +23,12 @@ export class ListPage {
   sections: Item[]; // tableau des sections
   list: List;
 
+  // variables pour la fonction ajout rapide
+  newItemIsTag = false;
+  newItemName = "";
+
+  reordering = false; // indique l'etat de reordonnement des items
+
 
   // CONSTRUCTEUR
   constructor(private storage: StorageService,
@@ -33,10 +38,8 @@ export class ListPage {
     private vibration: Vibration,
     private event: Events,
     private translate: TranslateService) {
-
-    this.list = new List("");
     event.subscribe("list:change", () => {
-      this.changeList();
+      this.updateList();
     });
   }
 
@@ -56,6 +59,12 @@ export class ListPage {
         this.items[i].hide = !this.items[i].hide;
       }
     }
+    let sectionLabel = this.items[sectionIndex].label;
+    if (sectionLabel.includes(" ...")) {
+      this.items[sectionIndex].label = sectionLabel.replace(" ...", " ");
+    } else {
+      this.items[sectionIndex].label = sectionLabel + " ...";
+    }
   }
 
 
@@ -71,13 +80,28 @@ export class ListPage {
   }
 
 
-  addItem() {
-    const modal = this.modalCtrl.create(AddItem, { sections: this.sections });
+  // Permet d'ajouter rapidement un item/tag avec juste son nom 
+  quickAdd() {
+    let newItem = new Item(this.newItemName);
+    newItem.isSection = this.newItemIsTag;
+    this.storage.setItem(newItem)
+      .then(item => {
+        this.storage.addItemToList(this.list, item.id);
+        this.updateList();
+        this.newItemName = "";
+        this.newItemIsTag = false;
+      });
+  }
+
+
+  editItem(item: Item) {
+    const modal = this.modalCtrl.create(EditItem, {
+      item: item
+    });
     modal.onDidDismiss(response => {
       if (response && response.item) {
-        this.storage.setItem(response.item)
-          .then(item => {
-            this.storage.addItemToList(this.list, item.id, response.sectionId);
+        this.storage.setItem(response.item, true)
+          .then(() => {
             this.updateList();
           });
       }
@@ -86,33 +110,24 @@ export class ListPage {
   }
 
 
-  editItem(item: Item) {
-    let sectionId = null;
-    let itemIndex = this.items.findIndex((itm) => { return itm.id === item.id; });
-    // Recherche la 1ere section au dessus de l'item
-    for (var i = itemIndex; i >= 0; i--) {
-      if (this.items[i].isSection) {
-        sectionId = this.items[i].id;
-        break;
-      }
-    }
-    const modal = this.modalCtrl.create(EditItem, {
-      sections: this.sections,
-      item: item,
-      sectionId: sectionId
+  reorderItems(indexes) {
+    let element = this.items[indexes.from];
+    this.items.splice(indexes.from, 1);
+    this.items.splice(indexes.to, 0, element);
+  }
+
+
+  validReordering() {
+    this.reordering = false;
+    let newItemOrder = [];
+    this.items.forEach(element => {
+      newItemOrder.push(element.id);
     });
-    modal.onDidDismiss(response => {
-      if (response && response.item) {
-        this.storage.setItem(response.item, true)
-          .then(() => {
-            if (!item.isSection && response.sectionId !== sectionId) {
-              this.storage.updateItemRayon(this.list, item.id, response.sectionId);
-              this.updateList();
-            }
-          });
-      }
-    });
-    modal.present();
+    this.list.itemOrder = newItemOrder;
+    this.storage.setList(this.list, true)
+      .then(() => {
+        this.updateList();
+      });
   }
 
 
@@ -120,7 +135,7 @@ export class ListPage {
     this.translate.get(["ALERT_DEL_ITEM_TITLE", "ALERT_DEL_ITEM_MESSAGE", "CANCEL", "SUBMIT"]).subscribe(translation => {
       let confirm = this.alertCtrl.create({
         title: translation["ALERT_DEL_ITEM_TITLE"],
-        message: translation["ALERT_DEL_ITEM_MESSAGE"],
+        message: "",
         buttons: [
           {
             text: translation["CANCEL"],
@@ -147,7 +162,7 @@ export class ListPage {
       .subscribe(translations => {
         let confirm = this.alertCtrl.create({
           title: translations["ALERT_DEL_LIST_TITLE"],
-          message: translations["ALERT_DEL_LIST_MESSAGE"],
+          message: "",
           buttons: [
             {
               text: translations["CANCEL"],
@@ -157,16 +172,13 @@ export class ListPage {
             {
               text: translations["SUBMIT"],
               handler: () => {
-                this.storage.getList(this.app.currentListId)
-                  .then(list => {
-                    this.storage.delList(list)
-                      .then(notMainList => {
-                        if (notMainList) {
-                          this.app.previousList();
-                          this.app.listsIds.splice(this.app.listsIds.findIndex(id => id === list.id), 1);
-                          this.changeList();
-                        }
-                      });
+                this.storage.delList(this.app.currentList)
+                  .then(notMainList => {
+                    if (notMainList) {
+                      this.app.lists.splice(this.app.lists.findIndex(elem => elem.id === this.app.currentList.id), 1);
+                      this.app.currentList = this.app.lists[0];
+                      this.updateList();
+                    }
                   });
               }
             }
@@ -177,41 +189,20 @@ export class ListPage {
   }
 
 
-  // Modal d'edition/ d'ajout de liste
+  // Modal d'edition de liste
   editList() {
-    this.storage.getList(this.app.currentListId)
-      .then((list) => {
-        const modal = this.modalCtrl.create(EditList, {
-          'list': list
-        });
-        modal.onDidDismiss(response => {
-          if (response && response.list) {
-            if (response.new) {
-              this.storage.setList(response.list)
-                .then(list => {
-                  this.app.currentListId = list.id;
-                  this.event.publish("list:change");
-                });
-            } else {
-              this.storage.setList(response.list, true)
-                .then(list => {
-                  this.changeList();
-                });
-            }
-          }
-        });
-        modal.present();
-      })
-  }
-
-
-  previousList() {
-    this.app.previousList();
-    this.changeList();
-  }
-  nextList() {
-    this.app.nextList();
-    this.changeList();
+    const modal = this.modalCtrl.create(EditList, {
+      'list': this.app.currentList
+    });
+    modal.onDidDismiss(response => {
+      if (response && response.list) {
+        this.storage.setList(response.list, true)
+          .then(list => {
+            this.updateList();
+          });
+      }
+    });
+    modal.present();
   }
 
 
@@ -225,16 +216,8 @@ export class ListPage {
   }
 
 
-  changeList() {
-    this.storage.getList(this.app.currentListId)
-      .then(list => {
-        this.list = list;
-        this.updateList();
-      });
-  }
-
-
   updateList() {
+    this.list = this.app.currentList;
     this.storage.getAllItems(this.list.itemOrder)
       .then(items => {
         this.items = items;

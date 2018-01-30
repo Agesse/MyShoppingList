@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
 
 import { listTable } from "../constants/tables.constants";
+import { List } from "../classes/list.class";
+import { StorageService } from "./storage.service";
 
 
 // Service permettant d'effectuer diverses operations liees a l'application.
@@ -9,15 +11,12 @@ import { listTable } from "../constants/tables.constants";
 export class AppService {
 
   // VARIABLES
-  listsIds = []; // tableau des IDs des listes
-  currentListId = 0;
+  lists: List[] = []; // tableau des listes
+  currentList: List = null;
 
 
   constructor(private storage: Storage) {
-    this.storage.ready()
-      .then(() => {
-        this.getAllListsId();
-      })
+    this.getAllLists();
   }
 
 
@@ -47,37 +46,18 @@ export class AppService {
   }
 
 
-  // Recupere l'ensemble des ids des listes existantes
-  getAllListsId() {
+  // Recupere l'ensemble des listes
+  getAllLists() {
     this.storage.keys()
       .then((keys) => {
         keys.forEach(key => {
           if (key.includes(listTable)) {
             this.storage.get(key)
-              .then(list => this.listsIds.push(list.id))
+              .then(list => {
+                this.lists.push(list);
+              })
           }
         });
       })
-  }
-
-
-  // Passe a la liste suivante ou boucle si derniere
-  nextList() {
-    let currentIndex = this.listsIds.findIndex(id => id === this.currentListId);
-    if (currentIndex === this.listsIds.length - 1) {
-      this.currentListId = this.listsIds[0];
-    } else {
-      this.currentListId = this.listsIds[currentIndex + 1];
-    }
-  }
-
-  // Passe a la liste precedente ou boucle si premiere
-  previousList() {
-    let currentIndex = this.listsIds.findIndex(id => id === this.currentListId);
-    if (currentIndex === 0) {
-      this.currentListId = this.listsIds[this.listsIds.length - 1];
-    } else {
-      this.currentListId = this.listsIds[currentIndex - 1];
-    }
   }
 }

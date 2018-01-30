@@ -1,1 +1,24 @@
+<ion-menu [content]="currentpage">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>{{"MENU_TITLE" | translate}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <button ion-item *ngFor="let list of app.lists" (tap)="changeList(list)">
+        <ion-icon name="list-box" item-start [ngStyle]="{color: list.color.css}"></ion-icon>
+        <ion-label>{{list.label}}</ion-label>
+        <ion-note item-end></ion-note>
+      </button>
+      <button ion-item (tap)="addList()">
+        <ion-icon name="add" item-start [ngStyle]="{color: 'grey'}"></ion-icon>
+        <ion-label>{{"NEW_LIST" | translate}}</ion-label>
+        <ion-note item-end></ion-note>
+      </button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
 <ion-nav #currentpage [root]="rootPage"></ion-nav>

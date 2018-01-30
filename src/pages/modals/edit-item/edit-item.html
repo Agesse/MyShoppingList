@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{"MODAL_EDIT_ITEM_TITLE" | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <form #updateItemForm="ngForm" (ngSubmit)="dismiss(true)" novalidate>
+    <ion-list>
+      <ion-item>
+        <ion-label color="primary" fixed>{{"NAME_LABEL" | translate}}</ion-label>
+        <ion-input name="label" placeholder="{{'NAME_PLACEHOLDER' | translate}}" [(ngModel)]="item.label" required></ion-input>
+      </ion-item>
+      <ion-item *ngIf="!item.isSection">
+        <ion-label color="primary" fixed>{{"QTY_LABEL" | translate}}</ion-label>
+        <ion-input name="qty" type="number" placeholder="{{'QTY_PLACEHOLDER' | translate}}" [(ngModel)]="item.qty" required></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <button ion-button type="submit" [disabled]="!updateItemForm.form.valid" full>{{"SUBMIT" | translate}}</button>
+  </form>
+</ion-content>

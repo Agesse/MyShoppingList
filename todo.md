@@ -17,9 +17,13 @@ Revue code
 Autres
 ------
 
+* trier l'affichage des listes pour eviter bug affichage quand ajout
+* Icone pour changer couleur ?? (trouver moyen regler bug texte et couleur)
+* faire une passe sur les textes
+* Animer les swipe pour supprimer + les cachage de section
 * Icones (resources android & app/assets/imgs/logo.png)
 * Faire marcher vibrations
-* Reussir build --prod --release (supprimer node_modules de @agesse si merde, essayer de tout upgrader)
+* Reussir build --prod --release (supprimer node_modules de @agesse si merde)
 
 Features
 -------

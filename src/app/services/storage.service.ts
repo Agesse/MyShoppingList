@@ -44,7 +44,7 @@ export class StorageService {
       .then(() => {
         var firstList = new List(this.messages["FIRST_LIST_NAME"]);
         firstList.id = 0;
-        this.app.listsIds.push(0);
+        this.app.lists.push(firstList);
         return this.storage.set(listTable + firstList.id, firstList)
           .catch(e => this.notif.notify(this.messages["ERROR.SET_LIST"] + ": " + e));
       })
@@ -62,7 +62,7 @@ export class StorageService {
       return this.getRandomID(listTable)
         .then((id) => {
           list.id = id;
-          this.app.listsIds.push(id);
+          this.app.lists.push(list);
           return this.storage.set(listTable + id, list)
             .then(list => { return list; })
             .catch(e => this.notif.notify(this.messages["ERROR.SET_LIST"] + ": " + e));
@@ -186,25 +186,10 @@ export class StorageService {
    * @desc Ajoute un item dans une liste.
    * @param {List} list - liste dans laquelle ajouter l'item
    * @param {number} itemId - id de l'item a ajouter
-   * @param {number} sectionId - id de la section dans lequel ajouter l'item
    */
-  addItemToList(list: List, itemId: number, sectionId: number) {
-    // warn: 0 peut etre un id section valide
-    if (sectionId !== null) {
-      let sectionIndex = list.itemOrder.findIndex((id) => { return id === sectionId });
-      list.itemOrder.splice(sectionIndex + 1, 0, itemId);
-    } else {
-      list.itemOrder.splice(0, 0, itemId);
-    }
+  addItemToList(list: List, itemId: number) {
+    list.itemOrder.splice(0, 0, itemId);
     this.storage.set(listTable + list.id, list);
-  }
-
-
-  // Change le rayon d'un item
-  updateItemRayon(list: List, itemId: number, sectionId: number) {
-    let indexItem = list.itemOrder.findIndex((id) => { return id === itemId; });
-    list.itemOrder.splice(indexItem, 1);
-    this.addItemToList(list, itemId, sectionId);
   }
 
 
@@ -227,5 +212,4 @@ export class StorageService {
         return null;
       });
   }
-
 }

@@ -1,12 +1,23 @@
-<ion-header (swipeleft)="previousList()" (swiperight)="nextList()" (press)="editList()">
-  <ion-toolbar [ngStyle]="{background: list.color.css}">
+<ion-header (press)="editList()">
+  <ion-toolbar [ngStyle]="{background: list?.color.css}">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>{{list?.label}}</ion-title>
-    <ion-buttons end>
+    <ion-buttons end *ngIf="!reordering">
       <button ion-button icon-only (tap)="resetList()">
         <ion-icon name="refresh"></ion-icon>
       </button>
+      <button ion-button icon-only (tap)="reordering = true">
+        <ion-icon name="shuffle"></ion-icon>
+      </button>
       <button ion-button icon-only (tap)="delList()">
-        <ion-icon name="close"></ion-icon>
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end *ngIf="reordering">
+      <button ion-button icon-only (tap)="validReordering()">
+        <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>
@@ -15,13 +26,13 @@
 <ion-content padding>
 
   <!-- Liste des elements -->
-  <ion-list no-lines>
+  <ion-list no-lines [reorder]="reordering" (ionItemReorder)="reorderItems($event)">
     <ng-container *ngFor="let item of items; let i = index">
 
       <ion-item *ngIf="!item.hide && !item.isSection" (swipeleft)="delItem(item.id)" (swiperight)="delItem(item.id)" (press)="editItem(item)">
         <ion-label>{{item.label}}</ion-label>
         <ion-checkbox [(ngModel)]="item.checked" (tap)="checkItem(item)" color="dark"></ion-checkbox>
-        <ion-note item-end>x{{item.qty}}</ion-note>
+        <ion-note item-end *ngIf="item.qty > 1">x{{item.qty}}</ion-note>
       </ion-item>
 
       <ion-item *ngIf="item.isSection" class="subtitle" (swipeleft)="delItem(item.id)" (swiperight)="delItem(item.id)" (press)="editItem(item)"
@@ -31,9 +42,19 @@
     </ng-container>
   </ion-list>
 
-  <!-- Bouton d'ajout d'item -->
-  <ion-fab bottom center>
-    <button ion-fab mini (tap)="addItem()" [ngStyle]="{background: list.color.css}">+</button>
-  </ion-fab>
-
 </ion-content>
+
+<!-- Permet d'ajouter un item -->
+<ion-footer [ngStyle]="{borderColor: list?.color.css}">
+  <ion-toolbar>
+    <ion-input name="newItem" placeholder="{{'ADD_ITEM' | translate}}" [(ngModel)]="newItemName"></ion-input>
+    <ion-buttons end>
+      <button ion-button icon-only (tap)="newItemIsTag = !newItemIsTag">
+        <ion-icon name="pricetag" [ngStyle]="{color: newItemIsTag ? list?.color.css : '#c1c1c1'}"></ion-icon>
+      </button>
+      <button ion-button icon-only (tap)="quickAdd()">
+        <ion-icon name="add-circle" [ngStyle]="{color: list?.color.css}"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

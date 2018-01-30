@@ -15,13 +15,12 @@ import { AppService } from "./services/app.service";
 import { NotificationService } from "./services/notification.service";
 
 import { ListPage } from '../pages/list/list';
-import { AddItem } from '../pages/modals/add-item/modal-add-item';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { EditItem } from '../pages/modals/edit-item/modal-edit-item';
+import { EditItem } from '../pages/modals/edit-item/edit-item';
 import { StorageService } from './services/storage.service';
-import { EditList } from '../pages/modals/edit-list/modal-edit-list';
+import { EditList } from '../pages/modals/edit-list/edit-list';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -31,7 +30,6 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     MyShoppingList,
     ListPage,
-    AddItem,
     EditList,
     EditItem
   ],
@@ -53,7 +51,6 @@ export function HttpLoaderFactory(http: HttpClient) {
   entryComponents: [
     MyShoppingList,
     ListPage,
-    AddItem,
     EditList,
     EditItem
   ],

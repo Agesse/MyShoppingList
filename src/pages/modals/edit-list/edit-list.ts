@@ -5,8 +5,8 @@ import { Colors } from "@agesse/core";
 import { COLOR_BASICS } from "../../../app/constants/color.constants";
 
 @Component({
-  selector: "modal-edit-list",
-  templateUrl: "modal-edit-list.html"
+  selector: "edit-list",
+  templateUrl: "edit-list.html"
 })
 export class EditList implements AfterViewInit {
 
@@ -16,7 +16,6 @@ export class EditList implements AfterViewInit {
 
   list: List; // liste a editer
   colorList: Colors[]; // liste des couleurs selectionnables
-  isNewList: boolean = false; // creation d'une nouvelle liste ?
 
 
   // CONSTRUCTEUR
@@ -40,12 +39,8 @@ export class EditList implements AfterViewInit {
   dismiss(validateForm?: boolean) {
     if (validateForm) {
       this.list.color = this.colorSelectComponent.selectedColor;
-      if (this.isNewList) {
-        this.list.itemOrder = [];
-      }
       this.viewCtrl.dismiss({
-        list: this.list,
-        new: this.isNewList
+        list: this.list
       });
     } else {
       this.viewCtrl.dismiss();
