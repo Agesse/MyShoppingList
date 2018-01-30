@@ -89,7 +89,6 @@ export class MyShoppingList {
           {
             text: messages["SUBMIT"],
             handler: data => {
-              console.log(data);
               this.storage.setList(new List(data.name))
                 .then(list => {
                   this.app.currentList = list;

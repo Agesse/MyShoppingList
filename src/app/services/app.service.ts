@@ -50,14 +50,31 @@ export class AppService {
   getAllLists() {
     this.storage.keys()
       .then((keys) => {
+        let promises: Promise<List>[] = [];
         keys.forEach(key => {
           if (key.includes(listTable)) {
-            this.storage.get(key)
-              .then(list => {
-                this.lists.push(list);
-              })
+            promises.push(this.storage.get(key));
           }
         });
+        Promise.all(promises)
+          .then(lists => {
+            // tri par ordre alphabetique, avec la liste primaire en 1er
+            this.lists = lists;
+            this.sortList();
+          });
       })
+  }
+
+
+  sortList() {
+    this.lists.sort((a, b) => {
+      if (a.id === 0) {
+        return -1;
+      }
+      if (b.id === 0) {
+        return 1;
+      }
+      return a.label > b.label ? 1 : -1;
+    });
   }
 }

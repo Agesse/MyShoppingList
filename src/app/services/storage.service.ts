@@ -63,6 +63,7 @@ export class StorageService {
         .then((id) => {
           list.id = id;
           this.app.lists.push(list);
+          this.app.sortList();
           return this.storage.set(listTable + id, list)
             .then(list => { return list; })
             .catch(e => this.notif.notify(this.messages["ERROR.SET_LIST"] + ": " + e));
