@@ -212,7 +212,7 @@ export class ListPage {
     window.setTimeout((item) => {
       item.hide = true;
       this.storage.setItem(item, true);
-    }, 500, item);
+    }, 400, item);
   }
 
 

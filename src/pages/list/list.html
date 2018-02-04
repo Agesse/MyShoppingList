@@ -29,16 +29,23 @@
   <ion-list no-lines [reorder]="reordering" (ionItemReorder)="reorderItems($event)">
     <ng-container *ngFor="let item of items; let i = index">
 
-      <ion-item *ngIf="!item.hide && !item.isSection" (swipeleft)="delItem(item.id)" (swiperight)="delItem(item.id)" (press)="editItem(item)">
-        <ion-label>{{item.label}}</ion-label>
-        <ion-checkbox [(ngModel)]="item.checked" (tap)="checkItem(item)" color="dark"></ion-checkbox>
-        <ion-note item-end *ngIf="item.qty > 1">x{{item.qty}}</ion-note>
-      </ion-item>
+      <ion-item-sliding>
+        <ion-item *ngIf="!item.hide && !item.isSection">
+          <ion-label>{{item.label}}</ion-label>
+          <ion-checkbox [(ngModel)]="item.checked" (ionChange)="checkItem(item)" color="dark"></ion-checkbox>
+          <ion-note item-end *ngIf="item.qty > 1">x{{item.qty}}</ion-note>
+        </ion-item>
 
-      <ion-item *ngIf="item.isSection" class="subtitle" (swipeleft)="delItem(item.id)" (swiperight)="delItem(item.id)" (press)="editItem(item)"
-        (tap)="hideSection(item.id)">
-        <ion-label>{{item.label}}</ion-label>
-      </ion-item>
+        <ion-item *ngIf="item.isSection" class="subtitle" (press)="editItem(item)"
+          (tap)="hideSection(item.id)">
+          <ion-label>{{item.label}}</ion-label>
+        </ion-item>
+
+        <ion-item-options (ionSwipe)="delItem(item.id)" side="left">
+        </ion-item-options>
+        <ion-item-options (ionSwipe)="delItem(item.id)" side="right">
+        </ion-item-options>
+    </ion-item-sliding>
     </ng-container>
   </ion-list>
 
