@@ -18,7 +18,8 @@ Autres
 ------
 
 * Icone pour changer couleur ?? (trouver moyen regler bug texte et couleur)
-* Animer les swipe pour supprimer + les cachage de section
+* Trouver comment faire pour les cases a cocher (delai => bug)
+* Animer les swipe pour les cachage de section
 * Icones (resources android & app/assets/imgs/logo.png)
 * Faire marcher vibrations
 * Reussir build --prod --release (supprimer node_modules de @agesse si merde)
