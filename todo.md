@@ -20,7 +20,11 @@ Autres
 * Icone pour changer couleur ?? (trouver moyen regler bug texte et couleur)
 * Trouver comment faire pour les cases a cocher (delai => bug)
 * Animer les swipe pour les cachage de section
-* Faire marcher vibrations
+* Faire marcher vibrations (reussir a installer les plugins cordova)
+* Faire marcher couleur header
+* Rebuilder avec les bonnes icones
+* Bug reorder quand on cache des items
+* Performance pour reorder longue liste
 
 Features
 -------
