@@ -189,7 +189,7 @@ export class StorageService {
    * @param {number} itemId - id de l'item a ajouter
    */
   addItemToList(list: List, itemId: number) {
-    list.itemOrder.splice(0, 0, itemId);
+    list.itemOrder.push(itemId);
     this.storage.set(listTable + list.id, list);
   }
 

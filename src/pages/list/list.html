@@ -5,11 +5,11 @@
     </button>
     <ion-title>{{list?.label}}</ion-title>
     <ion-buttons end *ngIf="!reordering">
-      <button ion-button icon-only (tap)="resetList()">
-        <ion-icon name="refresh"></ion-icon>
-      </button>
       <button ion-button icon-only (tap)="reordering = true">
         <ion-icon name="shuffle"></ion-icon>
+      </button>
+      <button ion-button icon-only (tap)="resetList()">
+        <ion-icon name="refresh"></ion-icon>
       </button>
       <button ion-button icon-only (tap)="delList()">
         <ion-icon name="trash"></ion-icon>
@@ -30,14 +30,13 @@
     <ng-container *ngFor="let item of items; let i = index">
 
       <ion-item-sliding>
-        <ion-item *ngIf="!item.hide && !item.isSection">
+        <ion-item *ngIf="!item.hide && !item.isSection" (press)="editItem(item)">
           <ion-label>{{item.label}}</ion-label>
-          <ion-checkbox [(ngModel)]="item.checked" (ionChange)="checkItem(item)" color="dark"></ion-checkbox>
+          <ion-checkbox [(ngModel)]="item.checked" (ionChange)="checkItem(item)" color="dark" [disabled]="reordering"></ion-checkbox>
           <ion-note item-end *ngIf="item.qty > 1">x{{item.qty}}</ion-note>
         </ion-item>
 
-        <ion-item *ngIf="item.isSection" class="subtitle" (press)="editItem(item)"
-          (tap)="hideSection(item.id)">
+        <ion-item *ngIf="item.isSection" class="subtitle" (press)="editItem(item)" (tap)="hideSection(item.id)">
           <ion-label>{{item.label}}</ion-label>
         </ion-item>
 
@@ -45,7 +44,7 @@
         </ion-item-options>
         <ion-item-options (ionSwipe)="delItem(item.id)" side="right">
         </ion-item-options>
-    </ion-item-sliding>
+      </ion-item-sliding>
     </ng-container>
   </ion-list>
 

@@ -18,7 +18,6 @@ import { ListPage } from '../pages/list/list';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { EditItem } from '../pages/modals/edit-item/edit-item';
 import { StorageService } from './services/storage.service';
 import { EditList } from '../pages/modals/edit-list/edit-list';
 
@@ -30,8 +29,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     MyShoppingList,
     ListPage,
-    EditList,
-    EditItem
+    EditList
   ],
   imports: [
     BrowserModule,
@@ -51,8 +49,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   entryComponents: [
     MyShoppingList,
     ListPage,
-    EditList,
-    EditItem
+    EditList
   ],
   providers: [
     StatusBar,

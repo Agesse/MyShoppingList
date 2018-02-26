@@ -4,7 +4,6 @@ import { Vibration } from '@ionic-native/vibration';
 
 import { StorageService } from "../../app/services/storage.service";
 import { AppService } from "../../app/services/app.service";
-import { EditItem } from '../modals/edit-item/edit-item';
 import { Item } from '../../app/classes/item.class';
 import { List } from '../../app/classes/list.class';
 import { TranslateService } from '@ngx-translate/core';
@@ -46,24 +45,26 @@ export class ListPage {
 
   // Cache les items d'une section
   hideSection(sectionId: number) {
-    var sectionIndex = this.items.findIndex((item) => { return item.id === sectionId });
-    var nextSectionIndex = this.items.findIndex((item, index) => {
-      return index > sectionIndex && item.isSection;
-    });
-    // si c'est la derniere section, cache jusqu'a la fin
-    if (nextSectionIndex === -1) {
-      nextSectionIndex = this.items.length;
-    }
-    for (var i = 0, l = this.items.length; i < l; i++) {
-      if (i >= sectionIndex && i < nextSectionIndex) {
-        this.items[i].hide = !this.items[i].hide;
+    if (!this.reordering) {
+      var sectionIndex = this.items.findIndex((item) => { return item.id === sectionId });
+      var nextSectionIndex = this.items.findIndex((item, index) => {
+        return index > sectionIndex && item.isSection;
+      });
+      // si c'est la derniere section, cache jusqu'a la fin
+      if (nextSectionIndex === -1) {
+        nextSectionIndex = this.items.length;
       }
-    }
-    let sectionLabel = this.items[sectionIndex].label;
-    if (sectionLabel.includes(" ...")) {
-      this.items[sectionIndex].label = sectionLabel.replace(" ...", " ");
-    } else {
-      this.items[sectionIndex].label = sectionLabel + " ...";
+      for (var i = 0, l = this.items.length; i < l; i++) {
+        if (i >= sectionIndex && i < nextSectionIndex) {
+          this.items[i].hide = !this.items[i].hide;
+        }
+      }
+      let sectionLabel = this.items[sectionIndex].label;
+      if (sectionLabel.includes(" ...")) {
+        this.items[sectionIndex].label = sectionLabel.replace(" ...", " ");
+      } else {
+        this.items[sectionIndex].label = sectionLabel + " ...";
+      }
     }
   }
 
@@ -95,25 +96,59 @@ export class ListPage {
 
 
   editItem(item: Item) {
-    const modal = this.modalCtrl.create(EditItem, {
-      item: item
-    });
-    modal.onDidDismiss(response => {
-      if (response && response.item) {
-        this.storage.setItem(response.item, true)
-          .then(() => {
-            this.updateList();
+    if (!this.reordering) {
+      this.translate.get(["MODAL_EDIT_ITEM_TITLE", "NAME_LABEL", "QTY_LABEL", "CANCEL", "SUBMIT"]).subscribe(messages => {
+        let inputs = [{
+          name: "label",
+          placeholder: messages["NAME_LABEL"],
+          value: item.label,
+          type: "text"
+        }];
+        if (!item.isSection) {
+          inputs.push({
+            name: "qty",
+            placeholder: messages["QTY_LABEL"],
+            type: "number",
+            value: item.qty.toString()
           });
-      }
-    });
-    modal.present();
+        }
+        let alert = this.alertCtrl.create({
+          title: messages["MODAL_EDIT_ITEM_TITLE"],
+          inputs: inputs,
+          buttons: [
+            {
+              text: messages["CANCEL"],
+              role: 'cancel',
+              handler: data => {
+              }
+            },
+            {
+              text: messages["SUBMIT"],
+              handler: data => {
+                item.label = data.label;
+                item.qty = data.qty;
+                this.storage.setItem(item, true)
+                  .then(() => {
+                    this.updateList();
+                  });
+              }
+            }
+          ]
+        });
+        alert.present();
+      });
+    }
   }
 
 
   reorderItems(indexes) {
     let element = this.items[indexes.from];
-    this.items.splice(indexes.from, 1);
-    this.items.splice(indexes.to, 0, element);
+    if (element.isSection && element.label.includes(" ...")) {
+
+    } else {
+      this.items.splice(indexes.from, 1);
+      this.items.splice(indexes.to, 0, element);
+    }
   }
 
 

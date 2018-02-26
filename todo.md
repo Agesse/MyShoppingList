@@ -1,8 +1,6 @@
 MyShoppingList
 ==============
 
-**COMPOSANT COLOR SELECT**
-
 Revue code
 ----------
 
@@ -16,21 +14,20 @@ Revue code
 
 Autres
 ------
-
 * Icone pour changer couleur ?? (trouver moyen regler bug texte et couleur)
-* Trouver comment faire pour les cases a cocher (delai => bug)
-* Animer les swipe pour les cachage de section
 * Faire marcher vibrations (reussir a installer les plugins cordova)
 * Faire marcher couleur header
 * Rebuilder avec les bonnes icones
-* Bug reorder quand on cache des items
 * Performance pour reorder longue liste
+* Deplacer le contenu des alertes dans un service a part pour alleger le code
 
 Features
 -------
-**aucunes**
+* Pouvoir reorder les items quand groupe
+* Animer les cachages de section
 
-
-Bugs mineurs
-------------
-**aucuns**
+Bugs
+----
+* Faire un element checkbox custom
+* Nouvelle liste avec accent => bug ?
+* Deroule automatiquement les sections quand on valide un reorder (a cause update)
