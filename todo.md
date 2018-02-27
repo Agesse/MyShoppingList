@@ -23,11 +23,9 @@ Autres
 
 Features
 -------
-* Pouvoir reorder les items quand groupe
 * Animer les cachages de section
 
 Bugs
 ----
-* Faire un element checkbox custom
+* Faire un element checkbox custom ?
 * Nouvelle liste avec accent => bug ?
-* Deroule automatiquement les sections quand on valide un reorder (a cause update)

@@ -46,6 +46,7 @@ export class ListPage {
   // Cache les items d'une section
   hideSection(sectionId: number) {
     if (!this.reordering) {
+      // Cherche de ou a ou cacher / montrer
       var sectionIndex = this.items.findIndex((item) => { return item.id === sectionId });
       var nextSectionIndex = this.items.findIndex((item, index) => {
         return index > sectionIndex && item.isSection;
@@ -54,16 +55,21 @@ export class ListPage {
       if (nextSectionIndex === -1) {
         nextSectionIndex = this.items.length;
       }
-      for (var i = 0, l = this.items.length; i < l; i++) {
-        if (i >= sectionIndex && i < nextSectionIndex) {
-          this.items[i].hide = !this.items[i].hide;
-        }
-      }
+
+      // Determine si on cache ou montre, important pour gerer apres deplacement
       let sectionLabel = this.items[sectionIndex].label;
+      let isHiding = true;
       if (sectionLabel.includes(" ...")) {
         this.items[sectionIndex].label = sectionLabel.replace(" ...", " ");
+        isHiding = false;
       } else {
         this.items[sectionIndex].label = sectionLabel + " ...";
+      }
+
+      for (var i = 0, l = this.items.length; i < l; i++) {
+        if (i >= sectionIndex && i < nextSectionIndex) {
+          this.items[i].hide = isHiding;
+        }
       }
     }
   }
@@ -144,7 +150,16 @@ export class ListPage {
   reorderItems(indexes) {
     let element = this.items[indexes.from];
     if (element.isSection && element.label.includes(" ...")) {
-
+      let toMove = [element];
+      for (let i = indexes.from + 1, l = this.items.length; i < l; i++) {
+        if (this.items[i].hide) {
+          toMove.push(this.items[i]);
+        }
+      }
+      this.items.splice(indexes.from, toMove.length);
+      for (let i = 0, l = toMove.length; i < l; i++) {
+        this.items.splice(indexes.to + i, 0, toMove[i]);
+      }
     } else {
       this.items.splice(indexes.from, 1);
       this.items.splice(indexes.to, 0, element);
@@ -159,10 +174,7 @@ export class ListPage {
       newItemOrder.push(element.id);
     });
     this.list.itemOrder = newItemOrder;
-    this.storage.setList(this.list, true)
-      .then(() => {
-        this.updateList();
-      });
+    this.storage.setList(this.list, true);
   }
 
 
