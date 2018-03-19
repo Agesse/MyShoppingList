@@ -19,7 +19,6 @@ export class ListPage {
 
   // VARIABLES
   items: Item[]; // tableau des items
-  sections: Item[]; // tableau des sections
   list: List;
 
   // variables pour la fonction ajout rapide
@@ -268,9 +267,6 @@ export class ListPage {
     this.storage.getAllItems(this.list.itemOrder)
       .then(items => {
         this.items = items;
-        this.sections = this.items.filter(item => {
-          return item.isSection;
-        });
       });;
   }
 } 

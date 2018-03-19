@@ -30,13 +30,13 @@
     <ng-container *ngFor="let item of items; let i = index">
 
       <ion-item-sliding>
-        <ion-item *ngIf="!item.hide && !item.isSection" (press)="editItem(item)">
+        <ion-item *ngIf="!item.hide && !item.isSection" (press)="editItem(item)" text-wrap>
           <ion-label>{{item.label}}</ion-label>
-          <ion-checkbox [(ngModel)]="item.checked" (ionChange)="checkItem(item)" color="dark" [disabled]="reordering"></ion-checkbox>
+          <ion-checkbox [(ngModel)]="item.checked" (ionChange)="checkItem(item)" [disabled]="reordering"></ion-checkbox>
           <ion-note item-end *ngIf="item.qty > 1">x{{item.qty}}</ion-note>
         </ion-item>
 
-        <ion-item *ngIf="item.isSection" class="subtitle" (press)="editItem(item)" (tap)="hideSection(item.id)">
+        <ion-item *ngIf="item.isSection" class="subtitle" (press)="editItem(item)" (tap)="hideSection(item.id)" text-wrap>
           <ion-label>{{item.label}}</ion-label>
         </ion-item>
 

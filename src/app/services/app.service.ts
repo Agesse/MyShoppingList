@@ -16,7 +16,6 @@ export class AppService {
 
 
   constructor(private storage: Storage) {
-    this.getAllLists();
   }
 
 

@@ -44,7 +44,6 @@ export class StorageService {
       .then(() => {
         var firstList = new List(this.messages["FIRST_LIST_NAME"]);
         firstList.id = 0;
-        this.app.lists.push(firstList);
         return this.storage.set(listTable + firstList.id, firstList)
           .catch(e => this.notif.notify(this.messages["ERROR.SET_LIST"] + ": " + e));
       })

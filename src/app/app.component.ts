@@ -46,22 +46,23 @@ export class MyShoppingList {
               if (isFirstRun) {
                 storage.setFirstList()
                   .then(() => {
-                    this.storage.getList(0).then(list => {
-                      this.app.currentList = list;
-                      this.event.publish("list:change");
-                    });
+                    this.showFirstList();
                   });
               } else {
-                this.storage.getList(0).then(list => {
-                  this.app.currentList = list;
-                  this.event.publish("list:change");
-                });
+                this.showFirstList();
               }
             });
         });
     });
   }
 
+  showFirstList() {
+    this.storage.getList(0).then(list => {
+      this.app.currentList = list;
+      this.app.getAllLists();
+      this.event.publish("list:change");
+    });
+  }
 
   changeList(list: List) {
     this.app.currentList = list;
