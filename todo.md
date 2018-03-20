@@ -19,10 +19,6 @@ Autres
 * Rebuilder avec les bonnes icones
 * Performance pour reorder longue liste
 
-Features
--------
-* Animer les cachages de section
-
 Bugs
 ----
 * Lenteurs quand liste trop grande => regarder virtualscroll, mais attention car les items ne se cochent plus

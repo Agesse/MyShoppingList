@@ -1,6 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { ModalController, AlertController, Events, Content } from 'ionic-angular';
 import { Vibration } from '@ionic-native/vibration';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
 
 import { StorageService } from "../../app/services/storage.service";
 import { AppService } from "../../app/services/app.service";
@@ -13,7 +20,18 @@ import { EditList } from '../modals/edit-list/edit-list';
 
 @Component({
   selector: 'page-list',
-  templateUrl: 'list.html'
+  templateUrl: 'list.html',
+  animations: [
+    trigger('flyInOut', [
+      transition(':enter', [
+        style({ transform: 'translateX(-100%)' }),
+        animate(300)
+      ]),
+      transition(':leave', [
+        animate(300, style({ transform: 'translateX(-100%)' }))
+      ])
+    ])
+  ]
 })
 export class ListPage {
 

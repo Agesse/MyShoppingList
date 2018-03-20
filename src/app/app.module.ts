@@ -1,5 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IonicStorageModule } from '@ionic/storage';
 import { Vibration } from '@ionic-native/vibration';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -33,6 +34,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     ColorSelectModule,
     IonicModule.forRoot(MyShoppingList),
     IonicStorageModule.forRoot(),
