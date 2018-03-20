@@ -19,7 +19,6 @@ Autres
 * Faire marcher couleur header
 * Rebuilder avec les bonnes icones
 * Performance pour reorder longue liste
-* Deplacer le contenu des alertes dans un service a part pour alleger le code
 
 Features
 -------
@@ -28,5 +27,4 @@ Features
 Bugs
 ----
 * Tous les évènements qui update la liste reset le cachage des sections
-* Scroller quand on ajoute en bas de l'écran
-* Lenteurs quand liste trop grande
+* Lenteurs quand liste trop grande => regarder virtualscroll, mais attention car les items ne se cochent plus

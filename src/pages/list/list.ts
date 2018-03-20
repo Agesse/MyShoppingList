@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ModalController, AlertController, Events } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { ModalController, AlertController, Events, Content } from 'ionic-angular';
 import { Vibration } from '@ionic-native/vibration';
 
 import { StorageService } from "../../app/services/storage.service";
@@ -18,6 +18,7 @@ import { EditList } from '../modals/edit-list/edit-list';
 export class ListPage {
 
   // VARIABLES
+  @ViewChild(Content) content: Content;
   items: Item[]; // tableau des items
   list: List;
 
@@ -96,6 +97,9 @@ export class ListPage {
         this.updateList();
         this.newItemName = "";
         this.newItemIsTag = false;
+        window.setTimeout(() => {
+          this.content.scrollToBottom()
+        }, 200);
       });
   }
 
