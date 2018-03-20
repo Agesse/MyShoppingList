@@ -27,8 +27,6 @@ Features
 
 Bugs
 ----
-* Faire un element checkbox custom
 * Tous les évènements qui update la liste reset le cachage des sections
 * Scroller quand on ajoute en bas de l'écran
-* Affichage de l'item même coché quand on cache / affiche une section
 * Lenteurs quand liste trop grande

@@ -256,9 +256,9 @@ export class ListPage {
   checkItem(item: Item) {
     this.vibration.vibrate(1000);
     window.setTimeout((item) => {
-      item.hide = true;
+      item.checked = true;
       this.storage.setItem(item, true);
-    }, 400, item);
+    }, 500, item);
   }
 
 
