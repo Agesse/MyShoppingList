@@ -94,7 +94,7 @@ export class ListPage {
     this.storage.setItem(newItem)
       .then(item => {
         this.storage.addItemToList(this.list, item.id);
-        this.updateList();
+        this.items.push(item);
         this.newItemName = "";
         this.newItemIsTag = false;
         window.setTimeout(() => {
@@ -136,10 +136,7 @@ export class ListPage {
               handler: data => {
                 item.label = data.label;
                 item.qty = data.qty;
-                this.storage.setItem(item, true)
-                  .then(() => {
-                    this.updateList();
-                  });
+                this.storage.setItem(item, true);
               }
             }
           ]
@@ -195,8 +192,11 @@ export class ListPage {
           {
             text: translation["SUBMIT"],
             handler: () => {
-              this.storage.delEntry(this.list, id)
-                .then(() => this.updateList());
+              this.storage.delEntry(this.list, id);
+              let itemIndex = this.items.findIndex((item) => {
+                return item.id === id;
+              });
+              this.items.splice(itemIndex, 1);
             }
           }
         ]
@@ -246,10 +246,8 @@ export class ListPage {
     });
     modal.onDidDismiss(response => {
       if (response && response.list) {
-        this.storage.setList(response.list, true)
-          .then(list => {
-            this.updateList();
-          });
+        this.list = response.list;
+        this.storage.setList(response.list, true);
       }
     });
     modal.present();

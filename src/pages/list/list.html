@@ -54,7 +54,7 @@
 <!-- Permet d'ajouter un item -->
 <ion-footer [ngStyle]="{borderColor: list?.color.css}">
   <ion-toolbar>
-    <ion-input name="newItem" placeholder="{{'ADD_ITEM' | translate}}" [(ngModel)]="newItemName"></ion-input>
+    <ion-input name="newItem" placeholder="{{'ADD_ITEM' | translate}}" [(ngModel)]="newItemName" (keyup.enter)="quickAdd()"></ion-input>
     <ion-buttons end>
       <button ion-button icon-only (tap)="newItemIsTag = !newItemIsTag">
         <ion-icon name="pricetag" [ngStyle]="{color: newItemIsTag ? list?.color.css : '#c1c1c1'}"></ion-icon>
