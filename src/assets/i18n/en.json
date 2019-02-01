@@ -6,6 +6,7 @@
   "MODAL_EDIT_ITEM_TITLE": "Edit item",
   "NEW_LIST": "New list",
   "ADD_ITEM": "Add new item",
+  "ALERT_WARNING": "Warning",
   "ALERT_DEL_LIST_TITLE": "Delete list?",
   "ALERT_DEL_ITEM_TITLE": "Delete item?",
   "NAME_LABEL": "Name",
@@ -13,7 +14,6 @@
   "QTY_LABEL": "Quantity",
   "NAME_PLACEHOLDER": "Choose a name",
   "QTY_PLACEHOLDER": "Choose a quantity",
-  "FIRST_LIST_NAME": "My list",
   "ERROR": {
     "SET_LIST": "Error creating list",
     "SET_ITEM": "Error creating item",
@@ -23,7 +23,7 @@
     "GET_ITEMS_IN_LIST": "Error getting list's items",
     "DEL_LIST": "Error deleting list",
     "DEL_ITEM": "Error deleting item",
-    "DEL_FIRST_LIST": "You can't delete the main list",
+    "DEL_LAST_LIST": "You must have at least one list",
     "GET_KEYS": "Error getting keys in database"
   },
   "SUCCESS": {

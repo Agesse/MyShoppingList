@@ -4,9 +4,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from '@ngx-translate/core';
 
-import { AppService } from "./services/app.service";
+import { ListService } from "./services/list.service";
 import { ListPage } from '../pages/list/list';
-import { StorageService } from './services/storage.service';
+import { MessageService } from './services/messages.service';
 import { List } from './classes/list.class';
 
 @Component({
@@ -19,10 +19,10 @@ export class MyShoppingList {
   constructor(platform: Platform,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
-    public app: AppService,
+    public listService: ListService,
     private alertCtrl: AlertController,
     private event: Events,
-    private storage: StorageService,
+    private messageService: MessageService,
     private translate: TranslateService,
     private menu: MenuController) {
 
@@ -31,75 +31,60 @@ export class MyShoppingList {
       splashScreen.hide();
 
       // recuperation des traductions
-      if (translate.getBrowserLang()) {
-        translate.setDefaultLang(translate.getBrowserLang());
+      if (this.translate.getBrowserLang()) {
+        this.translate.setDefaultLang(this.translate.getBrowserLang());
       } else {
-        translate.setDefaultLang("en");
+        this.translate.setDefaultLang("en");
       }
-      translate.get(storage.messagesKeys)
+      this.translate.get(this.messageService.messagesKeys)
         .subscribe(messages => {
-          storage.messages = messages;
+          this.messageService.messages = messages;
 
-          // initialisation de la 1ere liste si premier lancement de l'application
-          app.isFirstRun()
-            .then(isFirstRun => {
-              if (isFirstRun) {
-                storage.setFirstList()
-                  .then(() => {
-                    this.showFirstList();
-                  });
+          this.listService.getAll()
+            .then(lists => {
+              if (lists.length > 0) {
+                this.changeList(lists[0]);
               } else {
-                this.showFirstList();
+                this.addList();
               }
             });
         });
     });
   }
 
-  showFirstList() {
-    this.storage.getList(0).then(list => {
-      this.app.currentList = list;
-      this.app.getAllLists();
-      this.event.publish("list:change");
-    });
-  }
-
   changeList(list: List) {
-    this.app.currentList = list;
+    this.listService.currentList = list;
     this.event.publish("list:change");
     this.menu.close();
   }
 
   addList() {
-    this.translate.get(["NEW_LIST", "NAME_LABEL", "CANCEL", "SUBMIT"]).subscribe(messages => {
-      let alert = this.alertCtrl.create({
-        title: messages["NEW_LIST"],
-        inputs: [
-          {
-            name: "name",
-            placeholder: messages["NAME_LABEL"]
+    let alert = this.alertCtrl.create({
+      title: this.messageService.messages["NEW_LIST"],
+      inputs: [
+        {
+          name: "name",
+          placeholder: this.messageService.messages["NAME_LABEL"]
+        }
+      ],
+      buttons: [
+        {
+          text: this.messageService.messages["CANCEL"],
+          role: 'cancel',
+          handler: data => {
           }
-        ],
-        buttons: [
-          {
-            text: messages["CANCEL"],
-            role: 'cancel',
-            handler: data => {
-            }
-          },
-          {
-            text: messages["SUBMIT"],
-            handler: data => {
-              this.storage.setList(new List(data.name))
-                .then(list => {
-                  this.app.currentList = list;
-                  this.event.publish("list:change");
-                });
-            }
+        },
+        {
+          text: this.messageService.messages["SUBMIT"],
+          handler: data => {
+            this.listService.setList(new List(data.name))
+              .then(list => {
+                this.changeList(list);
+              });
           }
-        ]
-      });
-      alert.present();
+        }
+      ]
     });
+    alert.present();
   }
 }

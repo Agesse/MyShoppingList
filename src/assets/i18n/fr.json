@@ -6,6 +6,7 @@
   "MODAL_EDIT_ITEM_TITLE": "Modifier l'élément",
   "NEW_LIST": "Nouvelle liste",
   "ADD_ITEM": "Ajouter un élément",
+  "ALERT_WARNING": "Attention",
   "ALERT_DEL_LIST_TITLE": "Supprimer la liste ?",
   "ALERT_DEL_ITEM_TITLE": "Supprimer l'élément ?",
   "NAME_LABEL": "Nom",
@@ -13,17 +14,17 @@
   "QTY_LABEL": "Quantité",
   "NAME_PLACEHOLDER": "Choisir un nom",
   "QTY_PLACEHOLDER": "Choisir un nombre",
-  "FIRST_LIST_NAME": "Ma liste",
   "ERROR": {
     "SET_LIST": "Erreur lors de la création de la liste",
     "SET_ITEM": "Erreur lors de la création de l'élément",
     "UPDATE_LIST": "Erreur lors de la modification de la liste",
     "UPDATE_ITEM": "Erreur lors de la modification de l'élément",
     "GET_LIST": "Erreur lors de la récupération de la liste",
+    "GET_ALL_LISTS": "Erreur lors de la récupération des listes",
     "GET_ITEMS_IN_LIST": "Erreur lors de la récupération des éléments de la liste",
     "DEL_LIST": "Erreur lors de la suppression de la liste",
     "DEL_ITEM": "Erreur lors de la suppression de l'élément",
-    "DEL_FIRST_LIST": "Impossible de supprimer la liste principale",
+    "DEL_LAST_LIST": "Vous devez garder au moins une liste",
     "GET_KEYS": "Problème lors de la récupération des clés en BDD"
   },
   "SUCCESS": {

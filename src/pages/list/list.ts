@@ -3,18 +3,16 @@ import { ModalController, AlertController, Events, Content } from 'ionic-angular
 import { Vibration } from '@ionic-native/vibration';
 import {
   trigger,
-  state,
   style,
   animate,
   transition
 } from '@angular/animations';
 
-import { StorageService } from "../../app/services/storage.service";
-import { AppService } from "../../app/services/app.service";
+import { ItemService } from "../../app/services/item.service";
+import { MessageService } from "../../app/services/messages.service";
+import { ListService } from "../../app/services/list.service";
 import { Item } from '../../app/classes/item.class';
 import { List } from '../../app/classes/list.class';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs/Observable';
 import { EditList } from '../modals/edit-list/edit-list';
 
 
@@ -41,66 +39,21 @@ export class ListPage {
   list: List;
 
   // variables pour la fonction ajout rapide
-  newItemIsTag = false;
   newItemName = "";
 
   reordering = false; // indique l'etat de reordonnement des items
 
 
   // CONSTRUCTEUR
-  constructor(private storage: StorageService,
-    private app: AppService,
+  constructor(private itemService: ItemService,
+    private listService: ListService,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private vibration: Vibration,
     private event: Events,
-    private translate: TranslateService) {
-    event.subscribe("list:change", () => {
+    private messageService: MessageService) {
+    this.event.subscribe("list:change", () => {
       this.updateList();
-    });
-  }
-
-
-  // Cache les items d'une section
-  hideSection(sectionId: number) {
-    if (!this.reordering) {
-      // Cherche de ou a ou cacher / montrer
-      var sectionIndex = this.items.findIndex((item) => { return item.id === sectionId });
-      var nextSectionIndex = this.items.findIndex((item, index) => {
-        return index > sectionIndex && item.isSection;
-      });
-      // si c'est la derniere section, cache jusqu'a la fin
-      if (nextSectionIndex === -1) {
-        nextSectionIndex = this.items.length;
-      }
-
-      // Determine si on cache ou montre, important pour gerer apres deplacement
-      let sectionLabel = this.items[sectionIndex].label;
-      let isHiding = true;
-      if (sectionLabel.includes(" ...")) {
-        this.items[sectionIndex].label = sectionLabel.replace(" ...", " ");
-        isHiding = false;
-      } else {
-        this.items[sectionIndex].label = sectionLabel + " ...";
-      }
-
-      for (var i = 0, l = this.items.length; i < l; i++) {
-        if (i >= sectionIndex && i < nextSectionIndex) {
-          this.items[i].hide = isHiding;
-        }
-      }
-    }
-  }
-
-
-  // Decoche tous les items de la liste
-  resetList() {
-    this.items.forEach((item) => {
-      item.hide = false;
-      if (item.checked) {
-        item.checked = false;
-        this.storage.setItem(item, true);
-      }
     });
   }
 
@@ -108,13 +61,11 @@ export class ListPage {
   // Permet d'ajouter rapidement un item/tag avec juste son nom 
   quickAdd() {
     let newItem = new Item(this.newItemName);
-    newItem.isSection = this.newItemIsTag;
-    this.storage.setItem(newItem)
+    this.itemService.setItem(newItem)
       .then(item => {
-        this.storage.addItemToList(this.list, item.id);
+        this.itemService.addItemToList(this.list, item.id);
         this.items.push(item);
         this.newItemName = "";
-        this.newItemIsTag = false;
         window.setTimeout(() => {
           this.content.scrollToBottom()
         }, 200);
@@ -124,64 +75,45 @@ export class ListPage {
 
   editItem(item: Item) {
     if (!this.reordering) {
-      this.translate.get(["MODAL_EDIT_ITEM_TITLE", "NAME_LABEL", "QTY_LABEL", "CANCEL", "SUBMIT"]).subscribe(messages => {
-        let inputs = [{
-          name: "label",
-          placeholder: messages["NAME_LABEL"],
-          value: item.label,
-          type: "text"
-        }];
-        if (!item.isSection) {
-          inputs.push({
-            name: "qty",
-            placeholder: messages["QTY_LABEL"],
-            type: "number",
-            value: item.qty.toString()
-          });
-        }
-        let alert = this.alertCtrl.create({
-          title: messages["MODAL_EDIT_ITEM_TITLE"],
-          inputs: inputs,
-          buttons: [
-            {
-              text: messages["CANCEL"],
-              role: 'cancel',
-              handler: data => {
-              }
-            },
-            {
-              text: messages["SUBMIT"],
-              handler: data => {
-                item.label = data.label;
-                item.qty = data.qty;
-                this.storage.setItem(item, true);
-              }
-            }
-          ]
-        });
-        alert.present();
+      let inputs = [{
+        name: "label",
+        placeholder: this.messageService.messages["NAME_LABEL"],
+        value: item.label,
+        type: "text"
+      }];
+      inputs.push({
+        name: "qty",
+        placeholder: this.messageService.messages["QTY_LABEL"],
+        type: "number",
+        value: item.qty.toString()
       });
+      let alert = this.alertCtrl.create({
+        title: this.messageService.messages["MODAL_EDIT_ITEM_TITLE"],
+        inputs: inputs,
+        buttons: [
+          {
+            text: this.messageService.messages["CANCEL"],
+            role: 'cancel'
+          },
+          {
+            text: this.messageService.messages["SUBMIT"],
+            handler: data => {
+              item.label = data.label;
+              item.qty = data.qty;
+              this.itemService.setItem(item, true);
+            }
+          }
+        ]
+      });
+      alert.present();
     }
   }
 
 
   reorderItems(indexes) {
     let element = this.items[indexes.from];
-    if (element.isSection && element.label.includes(" ...")) {
-      let toMove = [element];
-      for (let i = indexes.from + 1, l = this.items.length; i < l; i++) {
-        if (this.items[i].hide) {
-          toMove.push(this.items[i]);
-        }
-      }
-      this.items.splice(indexes.from, toMove.length);
-      for (let i = 0, l = toMove.length; i < l; i++) {
-        this.items.splice(indexes.to + i, 0, toMove[i]);
-      }
-    } else {
-      this.items.splice(indexes.from, 1);
-      this.items.splice(indexes.to, 0, element);
-    }
+    this.items.splice(indexes.from, 1);
+    this.items.splice(indexes.to, 0, element);
   }
 
 
@@ -192,99 +124,84 @@ export class ListPage {
       newItemOrder.push(element.id);
     });
     this.list.itemOrder = newItemOrder;
-    this.storage.setList(this.list, true);
+    this.listService.setList(this.list, true);
   }
 
+  // Vibration + delai animation apres check d'un item
+  checkItem(checkedItem: Item) {
+    this.vibration.vibrate(500);
+    window.setTimeout((checkedItem) => {
 
-  delItem(id: number) {
-    this.translate.get(["ALERT_DEL_ITEM_TITLE", "ALERT_DEL_ITEM_MESSAGE", "CANCEL", "SUBMIT"]).subscribe(translation => {
-      let confirm = this.alertCtrl.create({
-        title: translation["ALERT_DEL_ITEM_TITLE"],
-        message: "",
-        buttons: [
-          {
-            text: translation["CANCEL"],
-            handler: () => {
-            }
-          },
-          {
-            text: translation["SUBMIT"],
-            handler: () => {
-              this.storage.delEntry(this.list, id);
-              let itemIndex = this.items.findIndex((item) => {
-                return item.id === id;
-              });
-              this.items.splice(itemIndex, 1);
-            }
-          }
-        ]
+      this.itemService.delItem(this.list, checkedItem.id);
+      let itemIndex = this.items.findIndex((item) => {
+        return item.id === checkedItem.id;
       });
-      confirm.present();
-    })
+      this.items.splice(itemIndex, 1);
+    }, 500, checkedItem);
   }
 
 
   // Alerte pour supprimer une liste
   delList() {
-    this.translate.get(["ALERT_DEL_LIST_TITLE", "ALERT_DEL_LIST_MESSAGE", "CANCEL", "SUBMIT"])
-      .subscribe(translations => {
-        let confirm = this.alertCtrl.create({
-          title: translations["ALERT_DEL_LIST_TITLE"],
-          message: "",
-          buttons: [
-            {
-              text: translations["CANCEL"],
-              handler: () => {
-              }
-            },
-            {
-              text: translations["SUBMIT"],
-              handler: () => {
-                this.storage.delList(this.app.currentList)
-                  .then(notMainList => {
-                    if (notMainList) {
-                      this.app.lists.splice(this.app.lists.findIndex(elem => elem.id === this.app.currentList.id), 1);
-                      this.app.currentList = this.app.lists[0];
-                      this.updateList();
-                    }
-                  });
-              }
+    let alert;
+    if (this.listService.lists.length > 1) {
+      alert = this.alertCtrl.create({
+        title: this.messageService.messages["ALERT_DEL_LIST_TITLE"],
+        message: "",
+        buttons: [
+          {
+            text: this.messageService.messages["CANCEL"],
+            handler: () => { }
+          },
+          {
+            text: this.messageService.messages["SUBMIT"],
+            handler: () => {
+              this.listService.delList(this.listService.currentList)
+                .then(success => {
+                  if (success) {
+                    this.listService.lists.splice(this.listService.lists.findIndex(elem => elem.id === this.listService.currentList.id), 1);
+                    this.listService.currentList = this.listService.lists[0];
+                    this.updateList();
+                  }
+                });
             }
-          ]
-        });
-        confirm.present();
+          }
+        ]
       });
+    } else {
+      alert = this.alertCtrl.create({
+        title: this.messageService.messages["ALERT_WARNING"],
+        message: this.messageService.messages["ERROR.DEL_LAST_LIST"],
+        buttons: [
+          {
+            text: this.messageService.messages["SUBMIT"],
+            handler: () => { }
+          }
+        ]
+      });
+    }
+    alert.present();
   }
 
 
   // Modal d'edition de liste
   editList() {
     const modal = this.modalCtrl.create(EditList, {
-      'list': this.app.currentList
+      'list': this.listService.currentList
     });
     modal.onDidDismiss(response => {
       if (response && response.list) {
         this.list = response.list;
-        this.storage.setList(response.list, true);
+        this.listService.setList(response.list, true);
       }
     });
     modal.present();
   }
 
 
-  // Vibration + delai animation apres check d'un item
-  checkItem(item: Item) {
-    this.vibration.vibrate(1000);
-    window.setTimeout((item) => {
-      item.checked = true;
-      this.storage.setItem(item, true);
-    }, 500, item);
-  }
-
-
   updateList() {
-    this.list = this.app.currentList;
-    this.storage.getAllItems(this.list.itemOrder)
+    this.list = this.listService.currentList;
+    this.itemService.getAllItems(this.list.itemOrder)
       .then(items => {
         this.items = items;
       });;

@@ -12,14 +12,14 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { ColorSelectModule } from '@agesse/core';
 
-import { AppService } from "./services/app.service";
-import { NotificationService } from "./services/notification.service";
+import { ListService } from "./services/list.service";
+import { MessageService } from "./services/messages.service";
 
 import { ListPage } from '../pages/list/list';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { StorageService } from './services/storage.service';
+import { ItemService } from './services/item.service';
 import { EditList } from '../pages/modals/edit-list/edit-list';
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -56,10 +56,10 @@ export function HttpLoaderFactory(http: HttpClient) {
   providers: [
     StatusBar,
     SplashScreen,
-    NotificationService,
+    MessageService,
     Vibration,
-    StorageService,
-    AppService,
+    ItemService,
+    ListService,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

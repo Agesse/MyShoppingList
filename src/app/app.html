@@ -7,15 +7,13 @@
 
   <ion-content>
     <ion-list>
-      <button ion-item *ngFor="let list of app.lists" (tap)="changeList(list)">
+      <button ion-item *ngFor="let list of listService.lists" (tap)="changeList(list)" detail="false">
         <ion-icon name="list-box" item-start [ngStyle]="{color: list.color.css}"></ion-icon>
         <ion-label>{{list.label}}</ion-label>
-        <ion-note item-end></ion-note>
       </button>
-      <button ion-item (tap)="addList()">
+      <button ion-item (tap)="addList()" detail="false">
         <ion-icon name="add" item-start [ngStyle]="{color: 'grey'}"></ion-icon>
         <ion-label>{{"NEW_LIST" | translate}}</ion-label>
-        <ion-note item-end></ion-note>
       </button>
     </ion-list>
   </ion-content>
